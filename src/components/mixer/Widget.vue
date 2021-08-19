@@ -92,10 +92,10 @@
           </div>
         </div>
       </div>
-      <div class="actions-wrapper middle">
+      <div class="actions-wrapper middle" v-if="settingsPopupTrigger && couponPopupTrigger">
         <v-tooltip top>
           <template v-slot:activator="{on, attrs}">
-            <button v-bind="attrs" v-on="on">
+            <button v-bind="attrs" v-on="on" @click="settingsPopupTrigger">
               <v-icon color="#01579b" dense>mdi-wrench</v-icon>
             </button>
           </template>
@@ -105,7 +105,7 @@
         </v-tooltip>
         <v-tooltip top>
           <template v-slot:activator="{on, attrs}">
-            <button v-bind="attrs" v-on="on">
+            <button v-bind="attrs" v-on="on" @click="couponPopupTrigger">
               <v-icon color="#01579b" dense>mdi-wallet-giftcard</v-icon>
             </button>
           </template>
@@ -114,7 +114,7 @@
           </span>
         </v-tooltip>
       </div>
-      <div class="actions-wrapper top">
+      <div class="actions-wrapper top" v-if="removeWidgetTrigger">
         <v-tooltip top>
           <template v-slot:activator="{on, attrs}">
             <button v-bind="attrs" v-on="on">
@@ -126,7 +126,7 @@
           </span>
         </v-tooltip>
       </div>
-      <div class="actions-wrapper bottom">
+      <div class="actions-wrapper bottom" v-if="addWidgetTrigger">
         <v-tooltip top>
           <template v-slot:activator="{on, attrs}">
             <button v-bind="attrs" v-on="on">
@@ -254,30 +254,36 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-
+import Vue, { PropType } from "vue";
+declare type PayoutType = "amount" | "percentage";
 export default Vue.extend({
   name: "Widget",
   props: {
-    // title: {
-    //   type: String,
-    //   default: "Payout",
-    // },
-    // payoutBy: {
-    //   type: String,
-    //   default: "percentage",
-    // },
-    // controls: {
-    //   type: Boolean,
-    //   default: false,
-    // },
+    title: {
+      type: String,
+      default: "Payout",
+    },
+    payoutType: {
+      type: String as PropType<PayoutType>,
+    },
+    payoutAmountPercentMin: {
+      type: Number,
+      default: 1,
+    },
+    payoutAmountPercentMax: {
+      type: Number,
+      default: 100,
+    },
+    settingsPopupTrigger: Function,
+    couponPopupTrigger: Function,
+    addWidgetTrigger: Function,
+    removeWidgetTrigger: Function,
   },
   data: () => ({
-    title: "Payout",
-    payoutType: "amount", // percentage | amount
     btcAddress: "",
     btcAddressError: false,
     btcAmount: "",
+    btcPayoutType: "amount",
     btcAmountError: false,
     btcPayoutDelayHours: 12,
     btcPayoutAmountPercent: 100,
@@ -285,21 +291,24 @@ export default Vue.extend({
     btcPayoutAmountPercentMax: 100,
   }),
   watch: {
-    // Validate BTC address
-    btcAddress: function (newVal) {
+    btcAddress(address) {
       const btcRegex = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/;
-      if (!newVal || btcRegex.test(newVal)) this.btcAddressError = false;
-      else this.btcAddressError = true;
+      this.btcAddressError = address && !btcRegex.test(address);
     },
-    btcAmount: function (newVal) {
-      console.log(newVal);
-
-      if (!newVal || /[1-9]+/.test(newVal)) this.btcAmountError = false;
-      else this.btcAmountError = true;
+    btcAmount(amount) {
+      this.btcAmountError = amount && !/[1-9]+/.test(amount);
+    },
+    payoutAmountPercentMin(value) {
+      this.btcPayoutAmountPercentMin = value;
+    },
+    payoutAmountPercentMax(value) {
+      this.btcPayoutAmountPercentMax = value;
+    },
+    payoutType(type) {
+      this.btcPayoutType = /amount|percentage/i.test(type)
+        ? type
+        : this.btcPayoutType;
     },
   },
-  // mounted() {
-  //   alert(window.innerWidth);
-  // },
 });
 </script>

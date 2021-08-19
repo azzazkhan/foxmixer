@@ -12,7 +12,7 @@
   height: calc(100vh - var(--header-height));
   overflow: auto;
   &.page-home {
-    padding-top: 40px;
+    padding-top: 50px;
   }
 }
 </style>
