@@ -1,3 +1,48 @@
+.intro-section {
+  background-color: #000;
+  color: var(--color-primary);
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+  .text-wrapper {
+    flex: 1;
+    text-align: center;
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    .intro-title {
+      font-size: 56px;
+      letter-spacing: -1px;
+      margin-bottom: 0;
+    }
+    .intro-description {
+      font-size: 34px;
+    }
+  }
+  .logo-wrapper {
+    display: none;
+    margin-left: 40px;
+    margin-right: 40px;
+    img {
+      height: 134px;
+      width: 134px;
+      border-radius: 4px;
+    }
+  }
+  @media (min-width: 1100px) {
+    justify-content: flex-end;
+    // margin: 0 -130px 0 0;
+    .text-wrapper {
+      .intro-description {
+        text-align: left;
+      }
+    }
+    .logo-wrapper {
+      display: block;
+    }
+  }
+}
+
 .mixer-section {
   padding-top: 40px;
   .intro-wrapper {

@@ -1,43 +1,60 @@
 <template>
-  <div class="intro-wrapper">
-    <div class="titles-wrapper">
-      <h1 class="title">Welcome to FoxMixer</h1>
-      <h3 class="description">The High Quality Bitcoin Mixer</h3>
+  <div class="intro-section">
+    <div class="text-wrapper">
+      <h1 class="intro-title">Welcome to FoxMixer</h1>
+      <h3 class="intro-description">The High Quality Bitcoin Mixer</h3>
     </div>
     <div class="logo-wrapper">
-      <img src="../../assets/images/logo-big.svg" class="logo" alt="FoxMixer" />
+      <img src="../../assets/images/logo-big.svg" alt="FoxMixer" />
     </div>
   </div>
 </template>
 
-<style lang="scss">
-.intro-wrapper {
+<style lang="scss" scoped>
+.intro-section {
+  color: var(--color-primary);
   display: flex;
-  justify-content: flex-end;
-  width: 60%;
-  margin: auto;
-  .titles-wrapper {
-    .title,
-    .description {
-      font-weight: 400;
-      color: var(--color-primary);
+  width: 80%;
+  margin-bottom: 60px;
+  .text-wrapper {
+    text-align: center;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    .intro-title {
+      font-size: 56px;
+      line-height: 1.3em;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
     }
-    .title {
-      font-size: 56px !important;
-      letter-spacing: -0.6px;
-      margin-bottom: 16px;
-    }
-    .description {
+    .intro-description {
       font-size: 34px;
+      line-height: 1.2em;
     }
   }
   .logo-wrapper {
-    margin-left: 40px;
-    .logo {
+    display: none;
+    img {
       height: 134px;
       width: 134px;
       border-radius: 4px;
-      transform: translateY(-30px);
+    }
+  }
+  @media (min-width: 1100px) {
+    padding-left: 10px;
+    width: auto;
+    display: inline-flex;
+    margin-left: 50px;
+    .text-wrapper {
+      text-align: left;
+      justify-content: flex-start;
+    }
+    .logo-wrapper {
+      display: block;
+      position: relative;
+      left: 50px;
     }
   }
 }
@@ -47,7 +64,6 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "MixerIntro",
-  data: () => ({}),
+  name: "Intro",
 });
 </script>

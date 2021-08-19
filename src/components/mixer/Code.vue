@@ -30,7 +30,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px auto 0;
+  margin: 0 auto;
   .code-label {
     font-size: 18px;
     color: var(--color-primary);
@@ -58,7 +58,7 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "MixerCode",
+  name: "Code",
   data: () => ({}),
 });
 </script>
