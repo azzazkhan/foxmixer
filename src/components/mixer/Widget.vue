@@ -205,6 +205,13 @@
       }
       .slider-wrapper {
         flex: 1;
+        .v-slider__thumb {
+          background-color: var(--color-primary) !important;
+          &::before {
+            background-color: var(--color-primary) !important;
+            opacity: 1 !important;
+          }
+        }
       }
       .amount-wrapper {
         color: var(--color-primary);
