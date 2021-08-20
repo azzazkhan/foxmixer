@@ -11,6 +11,7 @@
   width: 100%;
   height: calc(100vh - var(--header-height));
   overflow: auto;
+  padding-bottom: 2px;
   &.page-home {
     padding-top: 50px;
   }
