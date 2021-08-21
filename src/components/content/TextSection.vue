@@ -26,6 +26,7 @@
   }
   .content-wrapper {
     color: #000000;
+    text-align: justify;
     font-size: 18px;
     line-height: 24px;
     letter-spacing: normal;
@@ -41,7 +42,6 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "",
-  data: () => ({}),
+  name: "TextSection",
 });
 </script>
