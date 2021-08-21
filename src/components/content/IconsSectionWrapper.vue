@@ -15,6 +15,7 @@
   }
   @media (min-width: 880px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 95%;
   }
 }
 </style>

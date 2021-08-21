@@ -23,6 +23,7 @@
   &.wide {
     @media (min-width: 428px) {
       grid-column: span 2 / span 2;
+      margin: 0;
     }
     @media (min-width: 880px) {
       grid-column: span 1 / span 1;
@@ -34,6 +35,9 @@
     align-items: center;
     img {
       height: 130px;
+      @media (min-width: 880px) {
+        height: 160px;
+      }
     }
   }
   .title-wrapper > * {
@@ -44,6 +48,10 @@
     display: block;
     height: 70px;
     margin: 25px 0 5px;
+    @media (min-width: 880px) {
+      margin: 35px 0 5px;
+      font-size: 30px;
+    }
   }
   .content-wrapper {
     p {
@@ -52,6 +60,14 @@
       line-height: 19px;
       text-align: justify;
       margin: 0 10px 30px;
+      @media (min-width: 428px) {
+        margin-left: 0;
+        margin-right: 0;
+      }
+      @media (min-width: 880px) {
+        font-size: 18px;
+        line-height: 26px;
+      }
     }
   }
   .divider {
