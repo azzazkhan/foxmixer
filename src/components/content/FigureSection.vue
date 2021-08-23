@@ -6,7 +6,7 @@
     <div class="figure-side">
       <img
         v-if="image"
-        :src="require(image)"
+        :src="require(`../../assets/images/figure_${image}.png`)"
         class="figure-image"
         alt="Image not available"
       />
