@@ -23,7 +23,7 @@
   &.wide {
     @media (min-width: 428px) {
       grid-column: span 2 / span 2;
-      margin: 0;
+      margin: 0 10px;
     }
     @media (min-width: 880px) {
       grid-column: span 1 / span 1;
@@ -75,6 +75,9 @@
     background-color: #e1f5fe;
     width: 100%;
     margin: 30px 10px 40px;
+    @media (min-width: 880px) {
+      background: transparent;
+    }
   }
 }
 </style>

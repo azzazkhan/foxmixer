@@ -3,15 +3,18 @@
     <div class="widget">
       <div class="header" v-text="title" />
       <div class="content">
+        <!-- Wallet Address Input -->
         <div class="btc-address-wrapper">
           <v-text-field v-model="btcAddress" class="input-field" placeholder="Enter Bitcoin Payout Address" />
           <span v-show="btcAddressError" class="error-message">Address not valid</span>
         </div>
+        <!-- Absolute BTC Amount Input -->
         <div class="btc-amount-wrapper" v-if="payoutType === 'amount'">
           <v-text-field type="text" v-model="btcAmount" class="input-field" placeholder="Payout Amount" />
           <span class="label">BTC</span>
           <span v-show="btcAmountError" class="error-message">Amount must be non-negative</span>
         </div>
+        <!-- Payment Delay Slider -->
         <div class="slider-section delay-hours">
           <v-tooltip top>
             <template v-slot:activator="{on, attrs}">
@@ -52,6 +55,7 @@
             </v-slider>
           </div>
         </div>
+        <!-- Relative Payout Percentage Slider -->
         <div class="slider-section payout-amount" v-if="payoutType === 'percentage'">
           <v-tooltip top>
             <template v-slot:activator="{on, attrs}">
@@ -91,52 +95,77 @@
             </v-slider>
           </div>
         </div>
+        <!-- Small delay alert -->
+        <v-alert
+          color="#E1F5FE"
+          dense
+          v-if="btcPayoutDelayHours <= 7"
+        >
+          <div style="display: flex">
+            <v-icon color="#01579B">mdi-alert</v-icon>
+            <span
+              style="
+                color: var(--color-primary);
+                text-align: left;
+                flex: 1;
+                margin-left: 5px;
+              "
+            >
+              For large mixes, a higher payout delay is recommended
+            </span>
+          </div>
+        </v-alert>
       </div>
-      <div class="actions-wrapper middle" v-if="settingsPopupTrigger && couponPopupTrigger">
-        <v-tooltip top>
-          <template v-slot:activator="{on, attrs}">
-            <button v-bind="attrs" v-on="on" @click="settingsPopupTrigger">
-              <v-icon color="#01579b" dense>mdi-wrench</v-icon>
-            </button>
-          </template>
-          <span class="text-caption">
-            Configure advanced settings
-          </span>
-        </v-tooltip>
-        <v-tooltip top>
-          <template v-slot:activator="{on, attrs}">
-            <button v-bind="attrs" v-on="on" @click="couponPopupTrigger">
-              <v-icon color="#01579b" dense>mdi-wallet-giftcard</v-icon>
-            </button>
-          </template>
-          <span class="text-caption">
-            Enter coupon code
-          </span>
-        </v-tooltip>
-      </div>
-      <div class="actions-wrapper top" v-if="removeWidgetTrigger">
-        <v-tooltip top>
-          <template v-slot:activator="{on, attrs}">
-            <button v-bind="attrs" v-on="on">
-              <v-icon color="#01579b" dense>mdi-minus</v-icon>
-            </button>
-          </template>
-          <span class="text-caption">
-            Remove<br />Payout<br />Address
-          </span>
-        </v-tooltip>
-      </div>
-      <div class="actions-wrapper bottom" v-if="addWidgetTrigger">
-        <v-tooltip top>
-          <template v-slot:activator="{on, attrs}">
-            <button v-bind="attrs" v-on="on">
-              <v-icon color="#01579b" dense>mdi-plus</v-icon>
-            </button>
-          </template>
-          <span class="text-caption">
-            Add further payout address
-          </span>
-        </v-tooltip>
+      <div class="actions">
+        <!-- Remove widget action -->
+        <div class="actions-wrapper top" v-if="removeWidgetTrigger">
+          <v-tooltip top>
+            <template v-slot:activator="{on, attrs}">
+              <button v-bind="attrs" v-on="on">
+                <v-icon color="#01579b" dense>mdi-minus</v-icon>
+              </button>
+            </template>
+            <span class="text-caption">
+              Remove<br />Payout<br />Address
+            </span>
+          </v-tooltip>
+        </div>
+        <!-- Widget settings actions -->
+        <div class="actions-wrapper middle" v-if="settingsPopupTrigger && couponPopupTrigger">
+          <v-tooltip top>
+            <template v-slot:activator="{on, attrs}">
+              <button v-bind="attrs" v-on="on" @click="settingsPopupTrigger">
+                <v-icon color="#01579b" dense>mdi-wrench</v-icon>
+              </button>
+            </template>
+            <span class="text-caption">
+              Configure advanced settings
+            </span>
+          </v-tooltip>
+          <v-tooltip top>
+            <template v-slot:activator="{on, attrs}">
+              <button v-bind="attrs" v-on="on" @click="couponPopupTrigger">
+                <v-icon color="#01579b" dense>mdi-wallet-giftcard</v-icon>
+              </button>
+            </template>
+            <span class="text-caption">
+              Enter coupon code
+            </span>
+          </v-tooltip>
+        </div>
+        <!-- Add widget action -->
+        <div class="actions-wrapper bottom" v-if="addWidgetTrigger">
+          <v-tooltip top>
+            <template v-slot:activator="{on, attrs}">
+              <button v-bind="attrs" v-on="on">
+                <v-icon color="#01579b" dense>mdi-plus</v-icon>
+              </button>
+            </template>
+            <span class="text-caption">
+              Add further payout address
+            </span>
+          </v-tooltip>
+        </div>
       </div>
     </div>
   </center>

@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <slot></slot>
+    <site-footer />
   </div>
 </template>
 
@@ -20,8 +21,12 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Footer from "./Footer.vue";
 
 export default Vue.extend({
   name: "Page",
+  components: {
+    "site-footer": Footer,
+  },
 });
 </script>

@@ -8,6 +8,9 @@
   height: 2px;
   width: 90%;
   margin: 40px auto;
+  @media (min-width: 880px) {
+    width: 95%;
+  }
 }
 </style>
 
