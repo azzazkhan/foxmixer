@@ -7,7 +7,7 @@
 <style lang="scss" scoped>
 .icons-section-wrapper {
   width: 90%;
-  margin: 0 auto;
+  margin: 60px auto 0;
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   @media (min-width: 428px) {
