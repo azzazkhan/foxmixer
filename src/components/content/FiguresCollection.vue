@@ -8,10 +8,29 @@
         It is recommended to bookmark this page in your browser for quick and easy access.
       </p>
       <template v-slot:figure>
-        Animated Progess Bars Will Go Here
+        <div class="animated-progress-bars">
+          <div class="progress-bar payin">
+            <div class="background">
+              <div class="bar"></div>
+            </div>
+            <span class="label">Payin</span>
+          </div>
+          <div class="progress-bar mixing">
+            <div class="background">
+              <div class="bar"></div>
+            </div>
+            <span class="label">Mixing</span>
+          </div>
+          <div class="progress-bar done">
+            <div class="background">
+              <div class="bar"></div>
+            </div>
+            <span class="label">Done</span>
+          </div>
+        </div>
       </template>
     </figure-section>
-    <figure-section image="mixcode">
+    <figure-section image="mixcode" v-if="false">
       <h1>Mixcodes - Different Coins Each Time</h1>
       <p>
         Despite our huge mixing volume, there would be still a chance to receive previous coins from an earlier mix.<br />
@@ -19,14 +38,14 @@
         This allows for easy and risk-free bitcoin mixing, even in the long-term.
       </p>
     </figure-section>
-    <figure-section image="origin">
+    <figure-section image="origin" v-if="false">
       <h1>Transaction Origin Randomization</h1>
       <p>
         Most of the modern blockchain analysis services analyze the broadcast origin of a transaction. Operating multiple nodes in multiple countries allows them to trace where a transaction arrives first and by what IP address it is broadcasted.<br />
         FoxMixer uses a global network of transaction broadcast servers to entirely randomize the origin of broadcasted transactions. Each mix payout is randomly broadcasted from a different IP address, providing best-you-can-get location privacy.
       </p>
     </figure-section>
-    <figure-section image="dma">
+    <figure-section image="dma" v-if="false">
       <h1>Deep Mempool Analysis</h1>
       <p>
         Many transactions get into the focus of analysis because they stand out from the masses.<br />
@@ -48,6 +67,66 @@
   @media (min-width: 880px) {
     padding: 0;
     width: 90%;
+  }
+}
+.animated-progress-bars {
+  padding: 0 20px;
+  @media (min-width: 880px) {
+    position: relative;
+    bottom: 45px;
+  }
+  .progress-bar {
+    position: relative;
+    margin-top: 60px;
+    .background {
+      background-color: #e1f5fe;
+      height: 16px;
+      width: 100%;
+      margin-top: 20px;
+      border-radius: 50px;
+      &:first-of-type {
+        margin-top: 0;
+      }
+      .bar {
+        background-color: var(--color-primary);
+        height: 100%;
+        width: 0%;
+        border-radius: 50px;
+        transition: width 0.2s ease-in-out;
+      }
+    }
+    .label {
+      position: absolute;
+      top: calc(100% + 10px);
+      font-size: 17px;
+      font-weight: bold;
+      transform: translateX(-50%);
+      transition: transform 0.5s ease-out;
+    }
+    &.payin {
+      .bar {
+        width: 30%;
+      }
+      .label {
+        left: 30%;
+      }
+    }
+    &.mixing {
+      .bar {
+        width: 60%;
+      }
+      .label {
+        left: 60%;
+      }
+    }
+    &.done {
+      .bar {
+        width: 90%;
+      }
+      .label {
+        left: 90%;
+      }
+    }
   }
 }
 </style>

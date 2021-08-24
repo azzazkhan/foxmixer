@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <slot></slot>
-    <site-footer />
+    <!-- <site-footer /> -->
   </div>
 </template>
 

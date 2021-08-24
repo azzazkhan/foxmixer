@@ -40,6 +40,17 @@
     @media (min-width: 770px) {
       flex-direction: row;
     }
+    @media (min-width: 770px) {
+      .content-side {
+        flex-grow: 1;
+        margin-right: 60px !important;
+      }
+      .figure-side {
+        flex-shrink: 0;
+        width: 35%;
+        margin-right: 40px;
+      }
+    }
     .content-side {
       margin: 0 40px 40px 0;
       h1 {
@@ -66,10 +77,6 @@
     }
     .figure-side {
       text-align: center;
-      @media (min-width: 770px) {
-        flex-grow: 1;
-        min-width: 40%;
-      }
       img {
         max-width: 100%;
       }
