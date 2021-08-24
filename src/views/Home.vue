@@ -1,10 +1,10 @@
 <template>
   <page class="page-home">
-    <!-- <v3-banner /> -->
-    <!-- <mixer /> -->
-    <!-- <texts-collection /> -->
+    <v3-banner />
+    <mixer />
+    <texts-collection />
     <figures-collection />
-    <!-- <icons-section /> -->
+    <icons-section />
   </page>
 </template>
 
