@@ -205,7 +205,7 @@
         background-color: #03a9f4;
         color: white;
         font-size: 30px;
-        font-weight: bold;
+        font-weight: 400;
         text-decoration: none;
         text-transform: uppercase;
         display: inline-flex;
@@ -230,7 +230,7 @@ import Vue from "vue";
 import Page from "../components/Page.vue";
 
 export default Vue.extend({
-  name: "Home",
+  name: "FAQ",
   components: {
     page: Page,
   },

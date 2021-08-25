@@ -16,7 +16,8 @@
   &.page-home {
     padding-top: 50px;
   }
-  &.tutorial-page {
+  &.tutorial-page,
+  &.faq-page {
     padding-top: 40px;
   }
 }
