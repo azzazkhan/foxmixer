@@ -2,7 +2,7 @@
   <div class="texts-collection">
     <horizontal-divider />
     <!-- News & Announcements -->
-    <text-section>
+    <text-section id="news">
       <template v-slot:title>
         <h1>News &amp; Announcements</h1>
       </template>

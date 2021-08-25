@@ -17,7 +17,9 @@
     padding-top: 50px;
   }
   &.tutorial-page,
-  &.faq-page {
+  &.api-page,
+  &.faq-page,
+  &.review-page {
     padding-top: 40px;
   }
   &.investing-page,
@@ -26,6 +28,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+  &.pgp-page {
+    padding-top: 30px;
   }
 }
 </style>

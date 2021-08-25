@@ -83,7 +83,7 @@
 
         <h4>How can I check if my Letter of Guarantee is valid?</h4>
         <p>
-          In normal cases, you do not have to. If you are interested however, the Letter of Guarantee is signed by FoxMixer using the so-called OpenPGP encryption. Our public key for verification can be found <route-link to="/opengpg">here</route-link>. Depending on your operating system, there are various methods to check if the signature is valid.
+          In normal cases, you do not have to. If you are interested however, the Letter of Guarantee is signed by FoxMixer using the so-called OpenPGP encryption. Our public key for verification can be found <router-link to="/opengpg">here</router-link>. Depending on your operating system, there are various methods to check if the signature is valid.
         </p>
 
         <h4>What are the fees for this service?</h4>
@@ -156,6 +156,9 @@
     color: black;
     font-size: 18px;
     line-height: 24px;
+  }
+  a {
+    text-decoration: none;
   }
   .start-btn {
     background-color: #03a9f4;

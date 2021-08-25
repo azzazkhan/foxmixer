@@ -1,12 +1,14 @@
 <template>
-  <div class="logo-wrapper">
+  <router-link to="/" class="logo-wrapper">
     <img src="../../assets/images/logo.svg" class="icon" alt="FoxMixer" />
     <span class="title-wrapper">FoxMixer</span>
-  </div>
+  </router-link>
 </template>
 
 <style lang="scss" scoped>
 .logo-wrapper {
+  color: white !important;
+  text-decoration: none;
   display: flex;
   justify-content: space-between;
   align-items: center;

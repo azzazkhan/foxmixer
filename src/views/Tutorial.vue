@@ -228,20 +228,14 @@
 <script lang="ts">
 import Vue from "vue";
 import Page from "../components/Page.vue";
-
 export default Vue.extend({
   name: "FAQ",
   components: {
     page: Page,
   },
   data: () => ({
-    btcOpened: false,
+    btcOpened: true,
     coinbaseOpened: false,
   }),
-  mounted() {
-    setTimeout(() => {
-      this.btcOpened = true;
-    }, 100);
-  },
 });
 </script>

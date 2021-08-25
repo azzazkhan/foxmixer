@@ -1,6 +1,6 @@
 <template>
   <div class="angled-banner">
-    <span>New Tor Onion V3 URL</span>
+    <router-link to="/#news">New Tor Onion V3 URL</router-link>
   </div>
 </template>
 
@@ -28,6 +28,8 @@
     transform: rotate(-45deg) scale(1.1);
   }
   & > * {
+    color: white !important;
+    text-decoration: none !important;
     width: 140px;
   }
   @media (min-width: 1100px) {

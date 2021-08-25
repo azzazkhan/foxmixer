@@ -32,6 +32,21 @@ const routes: Array<RouteConfig> = [
     path: "/contact",
     name: "Contact",
     component: () => import(/* webpackChunkName: "contact" */ "../views/Contact.vue")
+  },
+  {
+    path: "/opengpg",
+    name: "OpenPGP",
+    component: () => import(/* webpackChunkName: "openpgp" */ "../views/OpenGPG.vue")
+  },
+  {
+    path: "/reviews",
+    name: "Reviews",
+    component: () => import(/* webpackChunkName: "reviews" */ "../views/Reviews.vue")
+  },
+  {
+    path: "/api",
+    name: "API",
+    component: () => import(/* webpackChunkName: "api" */ "../views/API.vue")
   }
 ];
 
