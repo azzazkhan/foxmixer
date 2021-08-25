@@ -1,10 +1,10 @@
 <template>
   <nav class="navigation-links-wrapper">
     <ul class="navigation">
-      <a href="#">Start</a>
-      <a href="#">Tutorial</a>
-      <a href="#" class="hidden-till-medium">Reviews</a>
-      <a href="#" class="hidden-till-medium">FAQ</a>
+      <router-link to="/">Start</router-link>
+      <router-link to="/tutorial">Tutorial</router-link>
+      <router-link to="/reviews" class="hidden-till-medium">Reviews</router-link>
+      <router-link to="/faq" class="hidden-till-medium">FAQ</router-link>
       <div class="nav-dropdown-wrapper">
         <v-menu bottom left>
           <template v-slot:activator="{on, attrs}">
