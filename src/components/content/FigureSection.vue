@@ -1,7 +1,14 @@
 <template>
   <div class="image-section">
     <h1 class="section-title" v-if="title" v-text="title"></h1>
-    <div class="sections-wrapper">
+    <div
+      :class="{
+        'sections-wrapper': true,
+        'animate-this': scrollReached,
+        'fade-this-in': fadeIn
+      }"
+      :id="ref_id"
+    >
       <div class="content-side">
         <slot />
       </div>
@@ -51,8 +58,14 @@
         margin-right: 40px;
       }
     }
+    .content-side,
+    .figure-side {
+      opacity: 0;
+      transition: all 0.75s ease;
+    }
     .content-side {
       margin: 0 40px 40px 0;
+      transform: translateY(30px);
       h1 {
         font-size: 28px;
         line-height: 1.2em;
@@ -76,9 +89,18 @@
       }
     }
     .figure-side {
+      transform: translateX(10px, -10px) scale(1.05);
       text-align: center;
       img {
         max-width: 100%;
+      }
+    }
+
+    &.fade-this-in {
+      .content-side,
+      .figure-side {
+        opacity: 1 !important;
+        transform: translate(0, 0) scale(1);
       }
     }
   }
@@ -104,6 +126,44 @@ export default Vue.extend({
   props: {
     image: String,
     title: String,
+  },
+  data: () => ({
+    ref_id: `figure_wrapper_${Math.floor(Math.random() * 999999)}_${Math.floor(
+      Math.random() * 999999
+    )}`,
+    scrollReached: false,
+    fadeIn: false,
+  }),
+  // Add scroll event listener to add animation classes
+  mounted() {
+    const scrollElement = document.querySelector(".page") as HTMLElement | null;
+    // BReak the functionality if no scroller is defined
+    if (!scrollElement) return false;
+    // Put the task at the end of queue
+    setTimeout(() => {
+      scrollElement.addEventListener("scroll", this.handleScroll);
+    }, 0);
+    setTimeout(() => {}, 1000);
+  },
+  // Remove the event listener the the componenet is unmounted
+  destroyed() {
+    // Put the task queue in the end
+    setTimeout(() => {
+      document
+        .querySelector(".page")
+        ?.removeEventListener("scroll", this.handleScroll);
+    }, 0);
+  },
+  methods: {
+    handleScroll(event: Event) {
+      const elem = document.getElementById(this.ref_id) as HTMLElement;
+      if (elem.getBoundingClientRect().top <= 340) {
+        this.scrollReached = true;
+        this.fadeIn = true;
+      } else {
+        this.fadeIn = false;
+      }
+    },
   },
 });
 </script>

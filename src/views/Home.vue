@@ -2,7 +2,7 @@
   <page class="page-home">
     <v3-banner />
     <mixer />
-    <texts-collection />
+    <!-- <texts-collection /> -->
     <figures-collection />
     <icons-section />
   </page>

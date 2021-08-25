@@ -8,12 +8,7 @@
         It is recommended to bookmark this page in your browser for quick and easy access.
       </p>
       <template v-slot:figure>
-        <div
-          :class="{
-            'animated-progress-bars': true,
-            'animate-this': animateProgress
-          }"
-        >
+        <div class="animated-progress-bars">
           <div class="progress-bar payin">
             <div class="background">
               <div class="bar"></div>
@@ -127,45 +122,45 @@
       animation-delay: 2.7s;
     }
   }
-  // Start the animation when class is applied
-  &.animate-this .progress-bar {
+}
+// Start the animation when class is applied
+.animate-this .progress-bar {
+  .label {
+    opacity: 1;
+    visibility: visible;
+    animation-name: scaleLabels;
+    animation-duration: 0.75s;
+    animation-timing-function: ease-in;
+  }
+  &.payin {
+    .bar {
+      width: 30%;
+    }
     .label {
-      opacity: 1;
-      visibility: visible;
-      animation-name: scaleLabels;
-      animation-duration: 0.75s;
-      animation-timing-function: ease-in;
-    }
-    &.payin {
-      .bar {
-        width: 30%;
-      }
-      .label {
-        height: 22px;
-      }
-    }
-    &.mixing {
-      .bar {
-        width: 60%;
-      }
-    }
-    &.done {
-      .bar {
-        width: 90%;
-      }
+      height: 22px;
     }
   }
+  &.mixing {
+    .bar {
+      width: 60%;
+    }
+  }
+  &.done {
+    .bar {
+      width: 90%;
+    }
+  }
+}
 
-  @keyframes scaleLabels {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.3);
-    }
-    100% {
-      transform: scale(1);
-    }
+@keyframes scaleLabels {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>
@@ -176,45 +171,8 @@ import FigureSection from "./FigureSection.vue";
 import Vue from "vue";
 export default Vue.extend({
   name: "FiguresCollection",
-  data: () => ({
-    animateProgress: false,
-  }),
   components: {
     "figure-section": FigureSection,
-  },
-  // Add scroll event listeners to play progress bar animation
-  mounted() {
-    const scrollElement = document.querySelector(".page") as HTMLElement | null;
-    if (!scrollElement) return; // Break the functionalit if no scroller is defined
-    // Put the task queue in the end
-    setTimeout(() => {
-      scrollElement.addEventListener("scroll", this.handleScroll);
-    }, 0);
-  },
-  // Remove the event listener the the componenet is unmounted
-  destroyed() {
-    // Put the task queue in the end
-    setTimeout(() => {
-      document
-        .querySelector(".page")
-        ?.removeEventListener("scroll", this.handleScroll);
-    }, 0);
-  },
-  methods: {
-    handleScroll(event: Event) {
-      // const scroller = event.target as HTMLElement;
-      const progress_bars = document.querySelector(
-        ".animated-progress-bars"
-      ) as HTMLElement;
-      // console.log(
-      //   scroller.scrollTop,
-      //   progress_bars.getBoundingClientRect().top
-      // );
-      if (progress_bars.getBoundingClientRect().top <= 280) {
-        this.animateProgress = true;
-        // scroller.removeEventListener("scroll", this.handleScroll);
-      }
-    },
   },
 });
 </script>
