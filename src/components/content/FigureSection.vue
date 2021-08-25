@@ -137,13 +137,12 @@ export default Vue.extend({
   // Add scroll event listener to add animation classes
   mounted() {
     const scrollElement = document.querySelector(".page") as HTMLElement | null;
-    // BReak the functionality if no scroller is defined
+    // Break the functionality if no scroller is defined
     if (!scrollElement) return false;
     // Put the task at the end of queue
     setTimeout(() => {
       scrollElement.addEventListener("scroll", this.handleScroll);
     }, 0);
-    setTimeout(() => {}, 1000);
   },
   // Remove the event listener the the componenet is unmounted
   destroyed() {
@@ -155,7 +154,7 @@ export default Vue.extend({
     }, 0);
   },
   methods: {
-    handleScroll(event: Event) {
+    handleScroll() {
       const elem = document.getElementById(this.ref_id) as HTMLElement;
       if (elem.getBoundingClientRect().top <= 340) {
         this.scrollReached = true;
