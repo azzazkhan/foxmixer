@@ -32,6 +32,9 @@
   &.pgp-page {
     padding-top: 30px;
   }
+  &.mix-complete-page {
+    padding-top: 40px;
+  }
 }
 </style>
 

@@ -47,6 +47,11 @@ const routes: Array<RouteConfig> = [
     path: "/api",
     name: "API",
     component: () => import(/* webpackChunkName: "api" */ "../views/API.vue")
+  },
+  {
+    path: "/mix/:mixCode/complete",
+    name: "MixComplete",
+    component: () => import(/* webpackChunkName: "mixComplete" */ "../views/MixComplete.vue")
   }
 ];
 
