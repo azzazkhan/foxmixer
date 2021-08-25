@@ -20,6 +20,13 @@
   &.faq-page {
     padding-top: 40px;
   }
+  &.investing-page,
+  &.contact-page {
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 </style>
 

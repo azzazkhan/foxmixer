@@ -3,11 +3,11 @@
     <div class="site-info-wrapper">
       <div class="copyrights">&copy; 2021 FoxMixer</div>
       <ul class="navigation">
-        <li><a href="/">API</a></li>
-        <li><a href="/">FAQ</a></li>
-        <li><a href="/">Reviews</a></li>
-        <li><a href="/">Investing</a></li>
-        <li><a href="/">Contact</a></li>
+        <li><router-link to="/api">API</router-link></li>
+        <li><router-link to="/faq">FAQ</router-link></li>
+        <li><router-link to="/reviews">Reviews</router-link></li>
+        <li><router-link to="/invest">Investing</router-link></li>
+        <li><router-link to="/contact">Contact</router-link></li>
       </ul>
     </div>
     <div class="description-wrapper">

@@ -188,14 +188,5 @@ export default Vue.extend({
   components: {
     page: Page,
   },
-  data: () => ({
-    btcOpened: false,
-    coinbaseOpened: false,
-  }),
-  mounted() {
-    setTimeout(() => {
-      this.btcOpened = true;
-    }, 100);
-  },
 });
 </script>
