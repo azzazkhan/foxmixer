@@ -64,7 +64,12 @@
       <mixer-code />
       <!-- Process start button -->
       <center>
-        <button class="start-mix-btn">Start Mixing</button>
+        <button
+          class="start-mix-btn"
+          @click.prevent="$router.push('/mix/okWorDP9c6MgjS8YH/complete')"
+        >
+          Start Mixing
+        </button>
       </center>
     </div>
   </center>

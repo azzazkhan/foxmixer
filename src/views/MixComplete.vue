@@ -3,7 +3,7 @@
     <div class="completion-wrapper">
       <div class="content-holder">
         <h3>Your mix has been generated</h3>
-        <table>
+        <table class="content-aligner">
           <tbody>
             <tr>
               <td>
@@ -37,7 +37,7 @@
           </tbody>
         </table>
         <div class="divider"></div>
-        <table>
+        <table class="content-aligner">
           <tbody>
             <tr>
               <td>
@@ -63,7 +63,7 @@
           </tbody>
         </table>
         <div class="divider"></div>
-        <table>
+        <table class="content-aligner">
           <tbody>
             <tr>
               <td>
@@ -71,11 +71,36 @@
               </td>
               <td>
                 <h4>3. You are done</h4>
+                <router-link :to="'/mix/' + $route.params.mixCode" class="continue-btn">Continue To Status >></router-link>
                 <p>
                   For your own privacy, this page and all information about your mix will be deleted automatically after 7 days. However, you can report issues even after this time.
                 </p>
                 <div class="divider"></div>
                 <p>You can also check the payout amount you will receive:</p>
+                <div class="btc-amount-wrapper">
+                  <v-text-field
+                    v-model="btcAmount"
+                    type="text"
+                    label="BTC payin amount"
+                  />
+                  <div class="error-message" v-if="btcAmountError">Amount must be non-negative</div>
+                </div>
+                <v-banner class="btc-amount-table-collapse" v-model="amountTableVisible" transition="slide-y-transition">
+                  <table class="btc-amount-table">
+                    <thead>
+                      <tr>
+                        <th>Address</th>
+                        <th>Payout amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</td>
+                        <td>1.97930000 BTC</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </v-banner>
               </td>
             </tr>
           </tbody>
@@ -85,9 +110,9 @@
   </page>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .completion-wrapper {
-  padding: 0 40px;
+  padding: 0 40px 40px;
   .content-holder {
     margin: 0 15%;
     h3 {
@@ -96,7 +121,7 @@
       font-size: 34px;
       line-height: 40px;
     }
-    table {
+    table.content-aligner {
       margin: 0;
       margin-left: -100px;
       padding: 0;
@@ -218,6 +243,67 @@
             text-decoration: none;
           }
         }
+        .continue-btn {
+          background-color: #03a9f4;
+          color: white;
+          font-size: 20px;
+          font-weight: bold;
+          text-decoration: none;
+          text-transform: uppercase;
+          line-height: 36px;
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          min-width: 90px;
+          margin: 7px 0 20px 0;
+          padding: 7px 20px;
+          transition: opacity 0.2s ease;
+          border-radius: 2px;
+          &:hover {
+            opacity: 0.9;
+          }
+        }
+        .btc-amount-wrapper {
+          position: relative;
+          width: 300px;
+          padding: 20px 0;
+          .error-message {
+            position: absolute;
+            color: #de3226;
+            bottom: 18px;
+            left: 0;
+          }
+          label {
+            color: var(--color-primary) !important;
+            font-size: 18px;
+          }
+          input {
+            color: black;
+            font-size: 18px;
+            font-weight: bold;
+          }
+        }
+        .btc-amount-table-collapse {
+          .v-banner__wrapper {
+            padding: 0 !important;
+            border: 0 !important;
+          }
+          table.btc-amount-table {
+            text-align: left;
+            border-collapse: collapse;
+            white-space: nowrap;
+            thead th,
+            tbody,
+            td {
+              border: 1px solid #03a9f4;
+              padding: 5px 30px 5px 5px;
+            }
+            thead th {
+              color: var(--color-primary);
+              font-weight: bold;
+            }
+          }
+        }
       }
     }
     .divider {
@@ -238,6 +324,26 @@ export default Vue.extend({
   name: "MixComplete",
   components: {
     page: Page,
+  },
+  data: () => ({
+    btcAmount: "",
+    btcAmountError: false,
+    amountTableVisible: false,
+  }),
+  watch: {
+    btcAmount(amount) {
+      if (
+        amount &&
+        /^[1-9]\d*(\.\d+)?$/.test(amount) &&
+        parseFloat(amount) > 0
+      ) {
+        this.btcAmountError = false;
+        this.amountTableVisible = true;
+        return;
+      }
+      this.btcAmountError = true;
+      this.amountTableVisible = false;
+    },
   },
 });
 </script>
