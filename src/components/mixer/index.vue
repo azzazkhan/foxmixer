@@ -9,13 +9,10 @@
       <div class="mixer-section">
         <center>
           <div class="mixer-widgets-wrapper">
-            <!-- <mixer-widget
+            <mixer-widget
               v-for="(widget, index) in widgets"
               :key="widget.number"
-              :number="index"
-            /> -->
-            <mixer-widget
-              :number="1"
+              :number="index + 1"
             />
           </div>
         </center>
@@ -40,7 +37,7 @@
   padding: 0 40px;
   .mixer-widgets-wrapper {
     text-align: left;
-    margin: 50px 6%;
+    margin: 50px 6% 0;
     max-width: 690px;
   }
 }

@@ -348,26 +348,3 @@ Vue.extend({
   },
 });
 </script>
-
-<script lang="ts">
-import Vue from "vue";
-import { mapState, mapGetters, mapMutations } from "vuex";
-
-export default Vue.extend({
-  name: "MixerWidget",
-  props: {
-    number: {
-      type: Number,
-      required: true,
-    },
-  },
-  computed: {
-    widget() {
-      return this.$store.getters.widgetByIndex(this.number);
-    },
-    ...mapGetters({
-      totalWidgets: "widgetCount",
-    }),
-  },
-});
-</script>

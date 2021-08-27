@@ -3,33 +3,36 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-interface Widget {
-  payoutAddress: String;
-  payoutDelay: Number;
-  payoutAmount: Number; // If percentage then limit to 100%
-}
-
-interface State {
-  payoutMethod: "percentages" | "amounts";
-  widgets: Widget[];
-}
-
 const store = new Vuex.Store({
   state: {
     payoutSettingsPopupOpened: false,
     couponCodePopupOpened: false,
-    payoutMethod: "percentage",
+    payoutMethod: "percentage", // percentage | amount
     widgets: [
       {
-        number: 1,
+        number: 1, // Current number of widget
         address: "",
         delay: 12,
-        percent: 100,
-        amount: ""
+        percentage: 100,
+        amount: 0
       }
     ]
   },
   mutations: {
+    // Single widget specific mutations
+    setWidgetAddress(state, widget: {index: number; address: string}) {
+      state.widgets[widget.index].address = widget.address;
+    },
+    setWidgetDelay(state, widget: {index: number; delay: number}) {
+      state.widgets[widget.index].delay = widget.delay;
+    },
+    setWidgetPercentage(state, widget: {index: number; percentage: number}) {
+      state.widgets[widget.index].percentage = widget.percentage;
+    },
+    setWidgetAmount(state, widget: {index: number; amount: number}) {
+      state.widgets[widget.index].amount = widget.amount;
+    },
+    // Global widget mutations
     setPayoutMethod(state, method: "percentage" | "amount") {
       state.payoutMethod = method;
     },
@@ -43,25 +46,27 @@ const store = new Vuex.Store({
       state.couponCodePopupOpened =
         typeof opened === "boolean" ? opened : !state.couponCodePopupOpened;
     },
+    // Widget manipulation mutations
     addWidget(state) {
-      state.widgets.push({
-        number: state.widgets.length,
-        address: "",
-        delay: 16,
-        percent: 0,
-        amount: ""
-      });
+      state.widgets.length < 3 &&
+        state.widgets.push({
+          number: state.widgets.length + 1,
+          address: "",
+          delay: 16,
+          percentage: 0,
+          amount: 0
+        });
     },
     removeWidget(state) {
-      state.widgets.pop();
+      state.widgets.length > 1 && state.widgets.pop();
     }
   },
   getters: {
-    widgetCount: (state) => {
-      return state.widgets.length
+    totalWidgets: (state) => {
+      return state.widgets.length;
     },
     widgetByIndex: (state) => (index: number) => {
-      return state.widgets[index]
+      return state.widgets[index];
     }
   }
 });

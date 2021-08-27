@@ -30,7 +30,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: -30px auto 0;
   .code-label {
     font-size: 18px;
     color: var(--color-primary);

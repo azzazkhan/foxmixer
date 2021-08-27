@@ -5,16 +5,20 @@
         <div class="header">Payout</div>
         <div class="content-wrapper">
           <!-- Bitcoin payout address field -->
-          <div v-if="false" class="input-wrapper address-wrapper">
+          <div class="input-wrapper address-wrapper">
             <div class="field-wrapper">
               <v-text-field
                 type="text"
-                v-model="btcAddress"
+                v-model="address"
                 class="input-field"
                 placeholder="Enter Bitcoin Payout Address"
               />
             </div>
-            <div class="error-wrapper">
+            <div
+              v-if="addressError"
+              class="error-wrapper"
+              style="bottom: -14px"
+            >
               Address not valid
             </div>
           </div>
@@ -22,7 +26,10 @@
             Absolute Bitcoin amount field
             Only visible if selected payout method is (amount)
           -->
-          <div v-if="false" class="input-wrapper absolute-amount-wrapper">
+          <div
+            v-if="payoutMethod === 'amount'"
+            class="input-wrapper"
+          >
             <div class="field-wrapper">
                 <v-text-field
                 type="text"
@@ -32,17 +39,28 @@
               />
             </div>
             <div class="label-wrapper">
-              <span class="ml-3 label">BTC</span>
+              <span
+                class="ml-3 label"
+                style="position: relative; top: 10px;"
+              >
+                BTC
+              </span>
             </div>
             <div
-              v-if="absoluteAmountError || true"
+              v-if="absoluteAmountError === 'nan'"
               class="error-wrapper"
             >
               Amount must be non-negative
             </div>
+            <div
+              v-if="absoluteAmountError === 'small'"
+              class="error-wrapper"
+            >
+              Please enter at least 0.00001000 BTC
+            </div>
           </div>
           <!-- Payment delay slider -->
-          <div class="slider-wrapper payout-delay-wrapper">
+          <div class="mt-2 slider-wrapper">
             <div class="label-wrapper">
               <v-tooltip top>
                 <template v-slot:activator="{on, attrs}">
@@ -91,7 +109,10 @@
             Only visible if selected payout method is (percentage)
               + there are more than 1 widgets!
           -->
-          <div class="slider-wrapper relative-amount-wrapper">
+          <div
+            v-if="payoutMethod === 'percentage' && totalWidgets > 1"
+            class="slider-wrapper"
+          >
             <div class="label-wrapper">
               <v-tooltip top>
                 <template v-slot:activator="{on, attrs}">
@@ -122,7 +143,7 @@
             <div class="tight-field-wrapper">
               <v-text-field
                 type="number"
-                v-model="payoutDelay"
+                v-model="relativeAmount"
                 hide-details
                 single-line
                 min="0"
@@ -138,21 +159,69 @@
             Alert for small payout delays notice
             Only visible when payout delay is smaller than 8
           -->
-          <div class="alert-wrapper delay-alert-wrapper">
+          <div v-if="delayWarning" class="alert-wrapper delay-alert-wrapper">
             <v-alert
               color="#E1F5FE"
               dense
             >
-              <div class="alert-contents">
-                <div class="icon-wrapper">
-                  <v-icon color="#01579B">mdi-alert</v-icon>
-                </div>
-                <div class="text-wrapper">
-                  For large mixes, a higher payout delay is recommended
-                </div>
+              <div class="icon-wrapper">
+                <v-icon color="#01579B">mdi-alert</v-icon>
+              </div>
+              <div class="text-wrapper">
+                For large mixes, a higher payout delay is recommended
               </div>
             </v-alert>
           </div>
+        </div>
+        <div class="actions-wrapper">
+          <!-- Only show on last widget (except the first one) -->
+          <action-button
+            icon="mdi-minus"
+            v-if="isLast && !isFirst"
+            style="
+              top: 0;
+              transform: translate(50%, -50%);
+            "
+            :click="removeWidget"
+          >
+            Remove payout address
+          </action-button>
+          <!-- Coupon code (only show on first widget) -->
+          <action-button
+            icon="mdi-wrench"
+            v-if="number === 1"
+            style="
+              bottom: 53px;
+              transform: translateX(50%);
+            "
+            :click="() => {toggleSettingsPopup(true)}"
+          >
+            Configure advanced settings
+          </action-button>
+          <!-- Coupon code (only show on first widget) -->
+          <action-button
+            icon="mdi-wallet-giftcard"
+            v-if="number === 1"
+            style="
+              bottom: 18px;
+              transform: translateX(50%);
+            "
+            :click="() => {toggleCouponPopup(true)}"
+          >
+            Enter coupon code
+          </action-button>
+          <!-- Add new widget (if this is the last widget and smaller than 3) -->
+          <action-button
+            icon="mdi-plus"
+            style="
+              bottom: 0;
+              transform: translate(50%, 50%);
+            "
+            v-if="isLast"
+            :click="addWidget"
+          >
+            Add further payout address
+          </action-button>
         </div>
       </div>
     </div>
@@ -161,7 +230,7 @@
 
 <style lang="scss">
 .mixer-widget-wrapper {
-  padding-bottom: 30px;
+  padding-bottom: 50px;
   margin: -20px -20px 0 0;
   .mixer-widget {
     position: relative;
@@ -198,7 +267,7 @@
           flex: 1;
           .v-input.input-field {
             margin: 0;
-            padding: 0 0 7px;
+            padding: 0;
             .v-input__slot {
               &::before {
                 border-color: rgba(0, 0, 0, 0.12);
@@ -215,6 +284,9 @@
                   font-weight: 400;
                 }
               }
+            }
+            .v-text-field__details {
+              display: none;
             }
           }
         }
@@ -287,10 +359,133 @@
         .error-wrapper {
           position: absolute;
           color: #de3226;
-          bottom: 5px;
+          bottom: -5px;
+        }
+      }
+      .alert-wrapper .v-alert {
+        margin: 0 0 10px;
+        border-radius: 4px;
+        .v-alert__content {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 3px 0;
+          .icon-wrapper {
+            position: relative;
+            bottom: 2px;
+            margin-right: 7px;
+          }
+          .text-wrapper {
+            color: var(--color-primary);
+          }
         }
       }
     }
   }
 }
 </style>
+
+<script lang="ts">
+import Vue from "vue";
+import { mapState, mapGetters, mapMutations } from "vuex";
+import ActionButton from "./ActionButton.vue";
+
+export default Vue.extend({
+  name: "MixerWidget",
+  components: {
+    "action-button": ActionButton,
+  },
+  props: {
+    number: {
+      type: Number,
+      required: true,
+    },
+  },
+  data: () => ({
+    addressError: false,
+    absoluteAmountError: "", // small | nan
+    delayWarning: false,
+  }),
+  computed: {
+    address: {
+      get() {
+        // Number will be one greater than the index
+        return this.$store.state.widgets[this.number - 1].address;
+      },
+      set(address: string) {
+        if (address) {
+          if (!/^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(address)) {
+            return (this.addressError = true);
+          }
+          this.$store.commit("setWidgetAddress", {
+            index: this.number - 1,
+            address,
+          });
+        }
+        this.addressError = false;
+      },
+    },
+    absoluteAmount: {
+      get() {
+        // Number will be one greater than the index
+        return this.$store.state.widgets[this.number - 1].amount;
+      },
+      set(amount: string) {
+        if (amount) {
+          if (!/^\d\d*(\.\d+)?$/.test(amount)) {
+            return (this.absoluteAmountError = "nan");
+          } else if (parseFloat(amount) < 0.00001) {
+            return (this.absoluteAmountError = "small");
+          }
+          // this.$store.state.widgets[this.number - 1].amount = amount;
+          this.$store.commit("setWidgetAmount", {
+            index: this.number - 1,
+            amount,
+          });
+        }
+        this.absoluteAmountError = "";
+      },
+    },
+    payoutDelay: {
+      get() {
+        // Number will be one greater than the index
+        return this.$store.state.widgets[this.number - 1].delay;
+      },
+      set(delay: string) {
+        if (parseInt(delay) <= 7) this.delayWarning = true;
+        else this.delayWarning = false;
+        this.$store.commit("setWidgetDelay", {
+          index: this.number - 1,
+          delay,
+        });
+      },
+    },
+    relativeAmount: {
+      get() {
+        // Number will be one greater than the index
+        return this.$store.state.widgets[this.number - 1].percentage;
+      },
+      set(percentage: string) {
+        this.$store.commit("setWidgetPercentage", {
+          index: this.number - 1,
+          percentage,
+        });
+      },
+    },
+    ...mapGetters(["totalWidgets"]),
+    ...mapState(["payoutMethod"]),
+    isLast() {
+      return this.totalWidgets === this.number;
+    },
+    isFirst() {
+      return this.number === 1;
+    },
+  },
+  methods: mapMutations([
+    "addWidget",
+    "removeWidget",
+    "toggleSettingsPopup",
+    "toggleCouponPopup",
+  ]),
+});
+</script>
