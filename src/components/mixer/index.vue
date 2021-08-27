@@ -1,65 +1,25 @@
 <template>
   <center>
     <div class="mixer-section">
-      <!-- Payout method settings popup -->
-      <v-dialog v-model="settingPopupOpened" max-width="50%">
-        <v-card>
-          <v-card-text class="pt-2">
-            <h2 class="popup-header">Advance payout settings</h2>
-            <v-radio-group v-model="payoutType">
-              <v-radio
-                label="Set relative payout percentages (recommended)"
-                value="percentage"
-              />
-              <v-radio
-                label="Set absolute payout amounts"
-                value="amount"
-              />
-            </v-radio-group>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              color="primary"
-              class="ml-auto"
-              text
-              @click="settingPopupOpened = false"
-            >
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <!-- Coupn code popup -->
-      <v-dialog v-model="couponPopupOpened" max-width="50%">
-        <v-card>
-          <v-card-text class="pt-2">
-            <h2 class="popup-header">Coupon Code</h2>
-            <div class="coupon-code-wrapper">
-              <v-text-field type="text" v-model="couponCode" class="input-field" placeholder="Enter Coupon Code here" />
-              <span v-show="couponCodeError" class="error-message">The given coupon code is not valid</span>
-          </div>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              color="primary"
-              class="ml-auto"
-              text
-              @click="couponPopupOpened = false"
-            >
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <payout-settings-popup />
+      <coupon-code-popup />
       <!-- Logo & name section -->
       <intro-section />
       <!-- Actual mixer widget -->
-      <mixer-widget
-        :payoutType="payoutType"
-        :addWidgetTrigger="() => {}"
-        :couponPopupTrigger="openCouponPopup"
-        :settingsPopupTrigger="openSettingsPopup"
-      />
+      <div class="mixer-section">
+        <center>
+          <div class="mixer-widgets-wrapper">
+            <!-- <mixer-widget
+              v-for="(widget, index) in widgets"
+              :key="widget.number"
+              :number="index"
+            /> -->
+            <mixer-widget
+              :number="1"
+            />
+          </div>
+        </center>
+      </div>
       <!-- Mix code inpute box -->
       <mixer-code />
       <!-- Process start button -->
@@ -76,6 +36,14 @@
 </template>
 
 <style lang="scss">
+.mixer-section {
+  padding: 0 40px;
+  .mixer-widgets-wrapper {
+    text-align: left;
+    margin: 50px 6%;
+    max-width: 690px;
+  }
+}
 // Popup styles
 .popup-header {
   color: var(--color-primary);
@@ -100,32 +68,16 @@
     opacity: 0.9;
   }
 }
-.coupon-code-wrapper {
-  margin-top: 40px;
-  position: relative;
-  input {
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: #dddddd !important;
-    &::placeholder {
-      color: var(--color-primary) !important;
-      font-weight: 400;
-    }
-  }
-  .error-message {
-    position: absolute;
-    color: #de3226;
-    bottom: -1px;
-    left: 0;
-  }
-}
 </style>
 
 <script lang="ts">
 import Vue from "vue";
+import { mapState, mapMutations } from "vuex";
 import Intro from "./Intro.vue";
 import Widget from "./Widget.vue";
 import Code from "./Code.vue";
+import PayoutSettingsPopup from "./popups/PayoutSettings.vue";
+import CouponCodePopup from "./popups/Coupon.vue";
 
 export default Vue.extend({
   name: "Mixer",
@@ -133,6 +85,8 @@ export default Vue.extend({
     "intro-section": Intro,
     "mixer-widget": Widget,
     "mixer-code": Code,
+    "payout-settings-popup": PayoutSettingsPopup,
+    "coupon-code-popup": CouponCodePopup,
   },
   data: () => ({
     settingPopupOpened: false,
@@ -142,12 +96,17 @@ export default Vue.extend({
     couponCodeError: false,
   }),
   methods: {
-    openSettingsPopup() {
-      this.settingPopupOpened = true;
-    },
-    openCouponPopup() {
-      this.couponPopupOpened = true;
-    },
+    ...mapMutations([
+      "toggleSettingsPopup",
+      "toggleCouponPopup",
+      "addWidget",
+      "removeWidget",
+    ]),
+  },
+  computed: {
+    ...mapState({
+      widgets: "widgets",
+    }),
   },
 });
 </script>
