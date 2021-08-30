@@ -35,8 +35,7 @@
         font-size: 56px;
         line-height: 1.3em;
         letter-spacing: -1px;
-        margin-bottom: 30px;
-        margin-top: -10px;
+        margin-bottom: 20px;
         .to {
           margin-right: -15px;
           margin-left: -15px;

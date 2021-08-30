@@ -14,7 +14,7 @@ const store = new Vuex.Store({
         address: "",
         delay: 12,
         percentage: 100,
-        amount: 0
+        amount: ""
       }
     ]
   },
@@ -30,7 +30,7 @@ const store = new Vuex.Store({
       state.widgets[widget.index].percentage = widget.percentage;
     },
     setWidgetAmount(state, widget: {index: number; amount: number}) {
-      state.widgets[widget.index].amount = widget.amount;
+      state.widgets[widget.index].amount = widget.amount.toString();
     },
     // Global widget mutations
     setPayoutMethod(state, method: "percentage" | "amount") {
@@ -54,7 +54,7 @@ const store = new Vuex.Store({
           address: "",
           delay: 16,
           percentage: 0,
-          amount: 0
+          amount: ""
         });
     },
     removeWidget(state) {
