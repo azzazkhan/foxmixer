@@ -55,6 +55,9 @@
         margin-left: 30px;
         animation: animateRightArrow 3000ms ease-in-out 0ms infinite forwards normal;
       }
+      @media screen and (max-width: 720px) {
+        display: none !important;
+      }
     }
     .more-text {
       font-weight: 300;
