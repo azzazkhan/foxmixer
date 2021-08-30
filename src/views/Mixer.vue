@@ -1,7 +1,7 @@
 <template>
   <page class="page-home">
     <v3-banner />
-    <mixer />
+    <mixer showWidget />
     <texts-collection />
     <figures-collection />
     <icons-section />

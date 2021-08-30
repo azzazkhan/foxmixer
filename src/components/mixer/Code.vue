@@ -26,39 +26,39 @@
 </template>
 
 <style lang="scss">
-.mixer-code {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: -30px auto 0;
-  .code-label {
-    font-size: 18px;
-    color: var(--color-primary);
-  }
-  .code-input-wrapper {
-    margin: 0 15px;
-    width: 240px;
-    input {
+  .mixer-code {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -50px auto 0;
+    .code-label {
       font-size: 18px;
-      color: black;
-      font-weight: bold;
-      &::placeholder {
-        color: var(--color-primary);
-        font-weight: 400;
+      color: var(--color-primary);
+    }
+    .code-input-wrapper {
+      margin: 0 15px;
+      width: 240px;
+      input {
+        font-size: 18px;
+        color: black;
+        font-weight: bold;
+        &::placeholder {
+          color: var(--color-primary);
+          font-weight: 400;
+        }
       }
     }
+    .info-icon-wrapper {
+      transform: translateY(-5px);
+    }
   }
-  .info-icon-wrapper {
-    transform: translateY(-5px);
-  }
-}
 </style>
 
 <script lang="ts">
-import Vue from "vue";
+  import Vue from "vue";
 
-export default Vue.extend({
-  name: "Code",
-  data: () => ({}),
-});
+  export default Vue.extend({
+    name: "Code",
+    data: () => ({})
+  });
 </script>
