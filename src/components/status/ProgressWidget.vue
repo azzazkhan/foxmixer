@@ -6,7 +6,7 @@
       <steps-wrapper>
         <step completed :left="7.5">
           <h1>Mix created</h1>
-          <p style="">On 26 Aug, at 19:05 GMT</p>
+          <p style="">On 30 Aug, at 19:05 GMT</p>
         </step>
         <step ongoing :left="29">
           <h1>Waiting for payin...</h1>
@@ -22,32 +22,32 @@
 </template>
 
 <style lang="scss" scoped>
-.progress-widget-wrapper {
-  margin-bottom: 140px;
-  margin-right: 50px;
-  .title {
-    color: var(--color-primary);
-    font-size: 34px !important;
-    font-weight: 400;
-    letter-spacing: 0 !important;
-    line-height: 40px;
-    margin-bottom: 10px;
+  .progress-widget-wrapper {
+    margin-bottom: 140px;
+    margin-right: 50px;
+    .title {
+      color: var(--color-primary);
+      font-size: 34px !important;
+      font-weight: 400;
+      letter-spacing: 0 !important;
+      line-height: 40px;
+      margin-bottom: 10px;
+    }
   }
-}
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Bar from "./Bar.vue";
-import StepsWrapper from "./StepsWrapper.vue";
-import Step from "./Step.vue";
+  import Vue from "vue";
+  import Bar from "./Bar.vue";
+  import StepsWrapper from "./StepsWrapper.vue";
+  import Step from "./Step.vue";
 
-export default Vue.extend({
-  name: "ProgressWidget",
-  components: {
-    "progress-bar": Bar,
-    "steps-wrapper": StepsWrapper,
-    step: Step,
-  },
-});
+  export default Vue.extend({
+    name: "ProgressWidget",
+    components: {
+      "progress-bar": Bar,
+      "steps-wrapper": StepsWrapper,
+      step: Step
+    }
+  });
 </script>

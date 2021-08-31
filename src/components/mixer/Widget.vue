@@ -14,11 +14,7 @@
                 placeholder="Enter Bitcoin Payout Address"
               />
             </div>
-            <div
-              v-if="addressError"
-              class="error-wrapper"
-              style="bottom: -14px"
-            >
+            <div v-if="addressError" class="error-wrapper" style="bottom: -14px">
               Address not valid
             </div>
           </div>
@@ -26,12 +22,9 @@
             Absolute Bitcoin amount field
             Only visible if selected payout method is (amount)
           -->
-          <div
-            v-if="payoutMethod === 'amount'"
-            class="input-wrapper"
-          >
+          <div v-if="payoutMethod === 'amount'" class="input-wrapper">
             <div class="field-wrapper">
-                <v-text-field
+              <v-text-field
                 type="text"
                 v-model="absoluteAmount"
                 class="input-field"
@@ -39,23 +32,14 @@
               />
             </div>
             <div class="label-wrapper">
-              <span
-                class="ml-3 label"
-                style="position: relative; top: 10px;"
-              >
+              <span class="ml-3 label" style="position: relative; top: 10px;">
                 BTC
               </span>
             </div>
-            <div
-              v-if="absoluteAmountError === 'nan'"
-              class="error-wrapper"
-            >
+            <div v-if="absoluteAmountError === 'nan'" class="error-wrapper">
               Amount must be non-negative
             </div>
-            <div
-              v-if="absoluteAmountError === 'small'"
-              class="error-wrapper"
-            >
+            <div v-if="absoluteAmountError === 'small'" class="error-wrapper">
               Please enter at least 0.00001000 BTC
             </div>
           </div>
@@ -64,11 +48,7 @@
             <div class="label-wrapper">
               <v-tooltip top>
                 <template v-slot:activator="{on, attrs}">
-                  <span
-                    class="mr-2 label"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
+                  <span class="mr-2 label" v-bind="attrs" v-on="on">
                     Payout Delay:
                   </span>
                 </template>
@@ -81,13 +61,7 @@
               </v-tooltip>
             </div>
             <div class="field-wrapper">
-              <v-slider
-                v-model="payoutDelay"
-                :max="48"
-                :min="2"
-                :step="1"
-                hide-details
-              />
+              <v-slider v-model="payoutDelay" :max="48" :min="2" :step="1" hide-details />
             </div>
             <div class="tight-field-wrapper">
               <v-text-field
@@ -109,18 +83,11 @@
             Only visible if selected payout method is (percentage)
               + there are more than 1 widgets!
           -->
-          <div
-            v-if="payoutMethod === 'percentage' && totalWidgets > 1"
-            class="slider-wrapper"
-          >
+          <div v-if="payoutMethod === 'percentage' && totalWidgets > 1" class="slider-wrapper">
             <div class="label-wrapper">
               <v-tooltip top>
                 <template v-slot:activator="{on, attrs}">
-                  <span
-                    class="mr-2 label"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
+                  <span class="mr-2 label" v-bind="attrs" v-on="on">
                     Payout Amount:
                   </span>
                 </template>
@@ -132,13 +99,7 @@
               </v-tooltip>
             </div>
             <div class="field-wrapper">
-              <v-slider
-                v-model="relativeAmount"
-                :max="100"
-                :min="0"
-                :step="1"
-                hide-details
-              />
+              <v-slider v-model="relativeAmount" :max="100" :min="0" :step="1" hide-details />
             </div>
             <div class="tight-field-wrapper">
               <v-text-field
@@ -160,10 +121,7 @@
             Only visible when payout delay is smaller than 8
           -->
           <div v-if="delayWarning" class="alert-wrapper delay-alert-wrapper">
-            <v-alert
-              color="#E1F5FE"
-              dense
-            >
+            <v-alert color="#E1F5FE" dense>
               <div class="icon-wrapper">
                 <v-icon color="#01579B">mdi-alert</v-icon>
               </div>
@@ -194,7 +152,11 @@
               bottom: 53px;
               transform: translateX(50%);
             "
-            :click="() => {toggleSettingsPopup(true)}"
+            :click="
+              () => {
+                toggleSettingsPopup(true);
+              }
+            "
           >
             Configure advanced settings
           </action-button>
@@ -206,7 +168,11 @@
               bottom: 18px;
               transform: translateX(50%);
             "
-            :click="() => {toggleCouponPopup(true)}"
+            :click="
+              () => {
+                toggleCouponPopup(true);
+              }
+            "
           >
             Enter coupon code
           </action-button>
@@ -229,263 +195,258 @@
 </template>
 
 <style lang="scss">
-.mixer-widget-wrapper {
-  padding-bottom: 50px;
-  margin: -20px -20px 0 0;
-  .mixer-widget {
-    position: relative;
-    margin: 20px 20px 0 0;
-    padding: 20px 30px 10px;
-    border: 1px solid #03a9f4;
-    border-radius: 4px;
-    .header {
-      position: absolute;
-      color: white;
-      background-color: #03a9f4;
-      font-size: 17px;
-      font-weight: bold;
-      line-height: 20px;
-      text-align: left;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding-left: 3px;
-    }
-    .content-wrapper {
-      padding-top: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-      .input-wrapper,
-      .slider-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
+  .mixer-widget-wrapper {
+    padding-bottom: 50px;
+    margin: -20px -20px 0 0;
+    .mixer-widget {
+      position: relative;
+      margin: 20px 20px 0 0;
+      padding: 20px 30px 10px;
+      border: 1px solid #03a9f4;
+      border-radius: 4px;
+      .header {
+        position: absolute;
+        color: white;
+        background-color: #03a9f4;
+        font-size: 17px;
+        font-weight: bold;
+        line-height: 20px;
+        text-align: left;
+        top: 0;
+        left: 0;
         width: 100%;
-        .field-wrapper {
-          flex: 1;
-          .v-input.input-field {
-            margin: 0;
-            padding: 0;
-            .v-input__slot {
-              &::before {
-                border-color: rgba(0, 0, 0, 0.12);
+        padding-left: 3px;
+      }
+      .content-wrapper {
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        .input-wrapper,
+        .slider-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
+          width: 100%;
+          .field-wrapper {
+            flex: 1;
+            .v-input.input-field {
+              margin: 0;
+              padding: 0;
+              .v-input__slot {
+                &::before {
+                  border-color: rgba(0, 0, 0, 0.12);
+                }
+                &::after {
+                  background-color: #03a9f4;
+                  border-color: #03a9f4;
+                }
+                input {
+                  font-size: 18px;
+                  font-weight: bold;
+                  &::placeholder {
+                    color: var(--color-primary);
+                    font-weight: 400;
+                  }
+                }
               }
-              &::after {
-                background-color: #03a9f4;
-                border-color: #03a9f4;
+              .v-text-field__details {
+                display: none;
               }
+            }
+          }
+          .tight-field-wrapper {
+            margin: 0 2px 0 8px;
+            .v-input {
+              margin: 0;
+              padding: 0;
+              .v-input__slot {
+                &::before {
+                  border-color: rgba(0, 0, 0, 0.12);
+                }
+              }
+              &,
               input {
                 font-size: 18px;
-                font-weight: bold;
-                &::placeholder {
-                  color: var(--color-primary);
-                  font-weight: 400;
+                text-align: center;
+                width: 35px;
+              }
+            }
+          }
+          &.slider-wrapper {
+            margin-bottom: 20px;
+            .label-wrapper .label {
+              margin-bottom: 0;
+            }
+            .v-slider {
+              // Limit the thumb expansion when slider is being slid
+              &.v-slider--active .v-slider__thumb::before {
+                transform: scale(0.85) !important;
+              }
+              // Empty area where slider is not been slide yet (non selected area)
+              .v-slider__track-container .v-slider__track-background {
+                background-color: #e1f5fe !important;
+                border-color: #e1f5fe !important;
+              }
+              // Slider area which has been slide over (selected area)
+              .v-slider__track-fill {
+                background-color: #3f51b5 !important;
+                border-collapse: #3f51b5 !important;
+              }
+              // The slider thumb (dot)
+              .v-slider__thumb-container {
+                // Do not scale/exapand on hover
+                &:hover {
+                  .v-slider__thumb::before {
+                    transform: scale(0);
+                  }
                 }
-              }
-            }
-            .v-text-field__details {
-              display: none;
-            }
-          }
-        }
-        .tight-field-wrapper {
-          margin: 0 2px 0 8px;
-          .v-input {
-            margin: 0;
-            padding: 0;
-            .v-input__slot {
-              &::before {
-                border-color: rgba(0, 0, 0, 0.12);
-              }
-            }
-            &,
-            input {
-              font-size: 18px;
-              text-align: center;
-              width: 35px;
-            }
-          }
-        }
-        &.slider-wrapper {
-          margin-bottom: 20px;
-          .label-wrapper .label {
-            margin-bottom: 0;
-          }
-          .v-slider {
-            // Limit the thumb expansion when slider is being slid
-            &.v-slider--active .v-slider__thumb::before {
-              transform: scale(0.85) !important;
-            }
-            // Empty area where slider is not been slide yet (non selected area)
-            .v-slider__track-container .v-slider__track-background {
-              background-color: #e1f5fe !important;
-              border-color: #e1f5fe !important;
-            }
-            // Slider area which has been slide over (selected area)
-            .v-slider__track-fill {
-              background-color: #3f51b5 !important;
-              border-collapse: #3f51b5 !important;
-            }
-            // The slider thumb (dot)
-            .v-slider__thumb-container {
-              // Do not scale/exapand on hover
-              &:hover {
-                .v-slider__thumb::before {
-                  transform: scale(0);
-                }
-              }
-              // Custom colors
-              .v-slider__thumb {
-                &,
-                &::before {
-                  opacity: 1 !important;
-                  background-color: var(--color-primary) !important;
-                  border-color: var(--color-primary) !important;
+                // Custom colors
+                .v-slider__thumb {
+                  &,
+                  &::before {
+                    opacity: 1 !important;
+                    background-color: var(--color-primary) !important;
+                    border-color: var(--color-primary) !important;
+                  }
                 }
               }
             }
           }
-        }
-        .label-wrapper {
-          display: flex;
-          .label {
-            color: var(--color-primary);
-            font-size: 19px;
-            margin-bottom: 30px;
+          .label-wrapper {
+            display: flex;
+            .label {
+              color: var(--color-primary);
+              font-size: 19px;
+              margin-bottom: 30px;
+            }
+          }
+          .error-wrapper {
+            position: absolute;
+            color: #de3226;
+            bottom: -5px;
           }
         }
-        .error-wrapper {
-          position: absolute;
-          color: #de3226;
-          bottom: -5px;
-        }
-      }
-      .alert-wrapper .v-alert {
-        margin: 0 0 10px;
-        border-radius: 4px;
-        .v-alert__content {
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          padding: 3px 0;
-          .icon-wrapper {
-            position: relative;
-            bottom: 2px;
-            margin-right: 7px;
-          }
-          .text-wrapper {
-            color: var(--color-primary);
+        .alert-wrapper .v-alert {
+          margin: 0 0 10px;
+          border-radius: 4px;
+          .v-alert__content {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 3px 0;
+            .icon-wrapper {
+              position: relative;
+              bottom: 2px;
+              margin-right: 7px;
+            }
+            .text-wrapper {
+              color: var(--color-primary);
+            }
           }
         }
       }
     }
   }
-}
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState, mapGetters, mapMutations } from "vuex";
-import ActionButton from "./ActionButton.vue";
+  import Vue from "vue";
+  import {mapState, mapGetters, mapMutations} from "vuex";
+  import ActionButton from "./ActionButton.vue";
 
-export default Vue.extend({
-  name: "MixerWidget",
-  components: {
-    "action-button": ActionButton,
-  },
-  props: {
-    number: {
-      type: Number,
-      required: true,
+  export default Vue.extend({
+    name: "MixerWidget",
+    components: {
+      "action-button": ActionButton
     },
-  },
-  data: () => ({
-    addressError: false,
-    absoluteAmountError: "", // small | nan
-    delayWarning: false,
-  }),
-  computed: {
-    address: {
-      get() {
-        // Number will be one greater than the index
-        return this.$store.state.widgets[this.number - 1].address;
-      },
-      set(address: string) {
-        if (address) {
-          if (!/^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(address)) {
-            return (this.addressError = true);
+    props: {
+      number: {
+        type: Number,
+        required: true
+      }
+    },
+    data: () => ({
+      addressError: false,
+      absoluteAmountError: "", // small | nan
+      delayWarning: false
+    }),
+    computed: {
+      address: {
+        get() {
+          // Number will be one greater than the index
+          return this.$store.state.widgets[this.number - 1].address;
+        },
+        set(address: string) {
+          if (address) {
+            if (!/^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(address)) {
+              return (this.addressError = true);
+            }
+            this.$store.commit("setWidgetAddress", {
+              index: this.number - 1,
+              address
+            });
           }
-          this.$store.commit("setWidgetAddress", {
+          this.addressError = false;
+        }
+      },
+      absoluteAmount: {
+        get() {
+          // Number will be one greater than the index
+          return this.$store.state.widgets[this.number - 1].amount;
+        },
+        set(amount: string) {
+          if (amount) {
+            if (!/^\d\d*(\.\d+)?$/.test(amount)) {
+              return (this.absoluteAmountError = "nan");
+            } else if (parseFloat(amount) < 0.00001) {
+              return (this.absoluteAmountError = "small");
+            }
+            // this.$store.state.widgets[this.number - 1].amount = amount;
+            this.$store.commit("setWidgetAmount", {
+              index: this.number - 1,
+              amount
+            });
+          }
+          this.absoluteAmountError = "";
+        }
+      },
+      payoutDelay: {
+        get() {
+          // Number will be one greater than the index
+          return this.$store.state.widgets[this.number - 1].delay;
+        },
+        set(delay: string) {
+          if (parseInt(delay) <= 7) this.delayWarning = true;
+          else this.delayWarning = false;
+          this.$store.commit("setWidgetDelay", {
             index: this.number - 1,
-            address,
+            delay
           });
         }
-        this.addressError = false;
       },
-    },
-    absoluteAmount: {
-      get() {
-        // Number will be one greater than the index
-        return this.$store.state.widgets[this.number - 1].amount;
-      },
-      set(amount: string) {
-        if (amount) {
-          if (!/^\d\d*(\.\d+)?$/.test(amount)) {
-            return (this.absoluteAmountError = "nan");
-          } else if (parseFloat(amount) < 0.00001) {
-            return (this.absoluteAmountError = "small");
-          }
-          // this.$store.state.widgets[this.number - 1].amount = amount;
-          this.$store.commit("setWidgetAmount", {
+      relativeAmount: {
+        get() {
+          // Number will be one greater than the index
+          return this.$store.state.widgets[this.number - 1].percentage;
+        },
+        set(percentage: string) {
+          this.$store.commit("setWidgetPercentage", {
             index: this.number - 1,
-            amount,
+            percentage
           });
         }
-        this.absoluteAmountError = "";
       },
-    },
-    payoutDelay: {
-      get() {
-        // Number will be one greater than the index
-        return this.$store.state.widgets[this.number - 1].delay;
+      ...mapGetters(["totalWidgets"]),
+      ...mapState(["payoutMethod"]),
+      isLast() {
+        return this.totalWidgets === this.number;
       },
-      set(delay: string) {
-        if (parseInt(delay) <= 7) this.delayWarning = true;
-        else this.delayWarning = false;
-        this.$store.commit("setWidgetDelay", {
-          index: this.number - 1,
-          delay,
-        });
-      },
+      isFirst() {
+        return this.number === 1;
+      }
     },
-    relativeAmount: {
-      get() {
-        // Number will be one greater than the index
-        return this.$store.state.widgets[this.number - 1].percentage;
-      },
-      set(percentage: string) {
-        this.$store.commit("setWidgetPercentage", {
-          index: this.number - 1,
-          percentage,
-        });
-      },
-    },
-    ...mapGetters(["totalWidgets"]),
-    ...mapState(["payoutMethod"]),
-    isLast() {
-      return this.totalWidgets === this.number;
-    },
-    isFirst() {
-      return this.number === 1;
-    },
-  },
-  methods: mapMutations([
-    "addWidget",
-    "removeWidget",
-    "toggleSettingsPopup",
-    "toggleCouponPopup",
-  ]),
-});
+    methods: mapMutations(["addWidget", "removeWidget", "toggleSettingsPopup", "toggleCouponPopup"])
+  });
 </script>

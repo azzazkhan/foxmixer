@@ -19,7 +19,7 @@
         </div>
         <div class="divider"></div>
         <center>
-          <button class="start-btn">Go Mixing</button>
+          <button class="start-btn" @click="$router.push('/mixing')">Go Mixing</button>
         </center>
       </div>
     </div>

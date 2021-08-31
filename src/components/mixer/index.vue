@@ -6,30 +6,35 @@
       <!-- Logo & name section -->
       <intro-section :animate="!showWidget" />
       <!-- Mixer widget and sub-components -->
-      <template v-if="showWidget">
-        <div class="mixer-section">
+      <div class="mixer-area" v-if="showWidget">
+        <template v-if="!widgetLoading">
+          <div class="mixer-section">
+            <center>
+              <div class="mixer-widgets-wrapper">
+                <mixer-widget
+                  v-for="(widget, index) in widgets"
+                  :key="widget.number"
+                  :number="index + 1"
+                />
+              </div>
+            </center>
+          </div>
+          <!-- Mix code inpute box -->
+          <mixer-code />
+          <!-- Process start button -->
           <center>
-            <div class="mixer-widgets-wrapper">
-              <mixer-widget
-                v-for="(widget, index) in widgets"
-                :key="widget.number"
-                :number="index + 1"
-              />
-            </div>
+            <button
+              class="start-mix-btn"
+              @click.prevent="$router.push('/mix/okWorDP9c6MgjS8YH/complete')"
+            >
+              Start Mixing
+            </button>
           </center>
+        </template>
+        <div class="widget-loader" v-else>
+          <v-progress-circular :size="50" color="#3f51b5" indeterminate></v-progress-circular>
         </div>
-        <!-- Mix code inpute box -->
-        <mixer-code />
-        <!-- Process start button -->
-        <center>
-          <button
-            class="start-mix-btn"
-            @click.prevent="$router.push('/mix/okWorDP9c6MgjS8YH/complete')"
-          >
-            Start Mixing
-          </button>
-        </center>
-      </template>
+      </div>
       <animated-home-button v-else />
     </div>
   </center>
@@ -42,6 +47,17 @@
       text-align: left;
       margin: 50px 6% 0;
       max-width: 690px;
+    }
+    .mixer-area {
+      position: relative;
+      .widget-loader {
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+        width: 100%;
+      }
     }
   }
   // Popup styles
@@ -94,12 +110,15 @@
       "animated-home-button": AnimatedHomeButton
     },
     data: () => ({
-      settingPopupOpened: false,
-      couponPopupOpened: false,
-      payoutType: "null", // percentage | amount
       couponCode: "",
-      couponCodeError: false
+      couponCodeError: false,
+      widgetLoading: true
     }),
+    mounted() {
+      setTimeout(() => {
+        this.widgetLoading = false;
+      }, 2000);
+    },
     methods: {
       ...mapMutations(["toggleSettingsPopup", "toggleCouponPopup", "addWidget", "removeWidget"])
     },

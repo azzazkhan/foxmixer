@@ -26,7 +26,7 @@
                   The date when this mix was<br />
                   created
                 </tooltip-cell>
-                <td>Thu, 26 Aug 2021 19:05:18 GMT</td>
+                <td>Thu, 30 Aug 2021 19:05:18 GMT</td>
               </tr>
               <tr>
                 <tooltip-cell label="Valid until">
@@ -59,46 +59,46 @@
 </template>
 
 <style lang="scss" scoped>
-.page-content-wrapper {
-  padding: 40px;
-  section.mix-details {
-    max-width: 600px;
-    h4 {
-      color: var(--color-primary);
-      font-size: 30px;
-      line-height: 32px;
-      font-weight: 400;
-      margin: 30px 0 15px;
-    }
-    table {
-      width: 100%;
-      margin-bottom: 20px;
-      border-collapse: collapse;
-      tr td {
-        color: black;
-        padding: 7.5px 10px;
-        border: 1px solid #03a9f4;
-        &:nth-of-type(2) {
-          background-color: #e1f5fe;
+  .page-content-wrapper {
+    padding: 40px;
+    section.mix-details {
+      max-width: 600px;
+      h4 {
+        color: var(--color-primary);
+        font-size: 30px;
+        line-height: 32px;
+        font-weight: 400;
+        margin: 30px 0 15px;
+      }
+      table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        tr td {
+          color: black;
+          padding: 7.5px 10px;
+          border: 1px solid #03a9f4;
+          &:nth-of-type(2) {
+            background-color: #e1f5fe;
+          }
         }
       }
     }
   }
-}
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Page from "../components/Page.vue";
-import ProgressWidget from "../components/status/ProgressWidget.vue";
-import TooltipCell from "../components/status/TooltipCell.vue";
+  import Vue from "vue";
+  import Page from "../components/Page.vue";
+  import ProgressWidget from "../components/status/ProgressWidget.vue";
+  import TooltipCell from "../components/status/TooltipCell.vue";
 
-export default Vue.extend({
-  name: "Status",
-  components: {
-    page: Page,
-    "progress-widget": ProgressWidget,
-    "tooltip-cell": TooltipCell,
-  },
-});
+  export default Vue.extend({
+    name: "Status",
+    components: {
+      page: Page,
+      "progress-widget": ProgressWidget,
+      "tooltip-cell": TooltipCell
+    }
+  });
 </script>
