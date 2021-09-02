@@ -23,10 +23,7 @@
           <mixer-code />
           <!-- Process start button -->
           <center>
-            <button
-              class="start-mix-btn"
-              @click.prevent="$router.push('/mix/okWorDP9c6MgjS8YH/complete')"
-            >
+            <button class="start-mix-btn" @click.prevent="startMixing">
               Start Mixing
             </button>
           </center>
@@ -37,6 +34,24 @@
       </div>
       <animated-home-button v-else />
     </div>
+    <!-- Alerts wrapper -->
+    <template>
+      <v-snackbar
+        color="#FF4081"
+        v-model="alert.opened"
+        top
+        right
+        content-class="text--white text-subtitle-1"
+        dark
+        :elevation="0"
+        width="100px"
+      >
+        <div class="d-flex justify-space-between white--text">
+          <v-icon color="white" size="35">mdi-shield-alert-outline</v-icon>
+          <span style="display: block; padding: 0 20px 0 10px">{{ alert.text }}</span>
+        </div>
+      </v-snackbar>
+    </template>
   </center>
 </template>
 
@@ -88,7 +103,7 @@
 
 <script lang="ts">
   import Vue from "vue";
-  import {mapState, mapMutations} from "vuex";
+  import {mapState, mapMutations, mapGetters} from "vuex";
   import Intro from "./Intro.vue";
   import Widget from "./Widget.vue";
   import Code from "./Code.vue";
@@ -112,20 +127,55 @@
     data: () => ({
       couponCode: "",
       couponCodeError: false,
-      widgetLoading: true
+      widgetLoading: true,
+      snackbarOpened: true,
+      alert: {
+        opened: false,
+        text: ""
+      }
     }),
     mounted() {
       setTimeout(() => {
         this.widgetLoading = false;
+        this.snackbarOpened = true;
       }, 2000);
     },
     methods: {
-      ...mapMutations(["toggleSettingsPopup", "toggleCouponPopup", "addWidget", "removeWidget"])
+      ...mapMutations(["toggleSettingsPopup", "toggleCouponPopup", "addWidget", "removeWidget"]),
+      startMixing() {
+        const {totalWidgets, widgets} = this;
+        const addressRegex = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/;
+        const amountRegex = !/^\d\d*(\.\d+)?$/;
+
+        // First address is empty
+        if (totalWidgets === 1 && !widgets[0].address)
+          return this.showAlert("You must specify at least 1 values");
+        // Total payout percentage must be equal to 100%
+        if (this.payoutMethod === "percentage" && this.totalPercentage !== 100)
+          return this.showAlert("The total payout amount must be equal to 100%");
+        // Total payout amount must be greater than
+
+        if (this.payoutMethod === "amount" && parseFloat(this.totalAmount) !== 100)
+          return this.showAlert("The total payout amount must be 100%");
+        for (const widget of widgets) {
+          if (this.payoutMethod === "amount" && (!(widget.amount) || !(amountRegex.test(widget.amount)))) {
+            return this.showAlert(`payoutAddresses.${widget.number - 1}.payoutPercentage is invalid`);
+          if (!widget.address)
+            return this.showAlert(
+              `payoutAddresses.${widget.number - 1}.payoutPercentage is invalid`
+            );
+          else if (!addressRegex.test(widget.address))
+            return this.showAlert(`payoutAddresses.${widget.number - 1}.address is invalid`);
+        }
+      },
+      showAlert(text: string): void {
+        this.alert.opened = true;
+        this.alert.text = text;
+      }
     },
     computed: {
-      ...mapState({
-        widgets: "widgets"
-      })
+      ...mapState(["widgets", "payoutMethod"]),
+      ...mapGetters(["totalPercentage", "totalWidgets"])
     }
   });
 </script>

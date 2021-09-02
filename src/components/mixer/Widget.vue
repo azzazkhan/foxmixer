@@ -379,15 +379,13 @@
           return this.$store.state.widgets[this.number - 1].address;
         },
         set(address: string) {
-          if (address) {
-            if (!/^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(address)) {
-              return (this.addressError = true);
-            }
-            this.$store.commit("setWidgetAddress", {
-              index: this.number - 1,
-              address
-            });
+          if (address && !/^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(address)) {
+            return (this.addressError = true);
           }
+          this.$store.commit("setWidgetAddress", {
+            index: this.number - 1,
+            address
+          });
           this.addressError = false;
         }
       },

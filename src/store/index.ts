@@ -67,7 +67,12 @@ const store = new Vuex.Store({
     },
     widgetByIndex: (state) => (index: number) => {
       return state.widgets[index];
-    }
+    },
+    totalPercentage: (state) =>
+      state.widgets.map((widget) => widget.percentage).reduce((p, c) => p + c, 0),
+    percentages: (state) => state.widgets.map((widget) => widget.percentage),
+    totalAmount: (state) =>
+      state.widgets.map((widget) => parseFloat(widget.amount)).reduce((p, c) => p + c, 0)
   }
 });
 
