@@ -3,14 +3,14 @@
     <div class="mixer-section">
       <payout-settings-popup />
       <coupon-code-popup />
-      <!-- Logo & name section -->
+      <!-- Only animate the header on homepage -->
       <intro-section :animate="!showWidget" />
-      <!-- Mixer widget and sub-components -->
+      <!-- Show the mixer widget only on mixing page -->
       <div class="mixer-area" v-if="showWidget">
-        <template v-if="!widgetLoading">
+        <template v-if="!loading">
           <div class="mixer-section">
             <center>
-              <div class="mixer-widgets-wrapper">
+              <div class="widgets-wrapper">
                 <mixer-widget
                   v-for="(widget, index) in widgets"
                   :key="widget.number"
@@ -19,26 +19,22 @@
               </div>
             </center>
           </div>
-          <!-- Mix code inpute box -->
           <mixer-code />
-          <!-- Process start button -->
           <center>
-            <button class="start-mix-btn" @click.prevent="startMixing">
-              Start Mixing
-            </button>
+            <button @click.prevent="mix" class="btn-mix">Start Mixing</button>
           </center>
         </template>
+        <!-- Display the loader if loading  -->
         <div class="widget-loader" v-else>
-          <v-progress-circular :size="50" color="#3f51b5" indeterminate></v-progress-circular>
+          <v-progress-circular :size="50" color="#3F54B5" indeterminate />
         </div>
       </div>
       <animated-home-button v-else />
     </div>
-    <!-- Alerts wrapper -->
     <template>
       <v-snackbar
         color="#FF4081"
-        v-model="alert.opened"
+        v-model="snackbar.opened"
         top
         right
         content-class="text--white text-subtitle-1"
@@ -48,134 +44,98 @@
       >
         <div class="d-flex justify-space-between white--text">
           <v-icon color="white" size="35">mdi-shield-alert-outline</v-icon>
-          <span style="display: block; padding: 0 20px 0 10px">{{ alert.text }}</span>
+          <span style="display: block; padding: 0 20px 0 10px">{{ snackbar.message }}</span>
         </div>
       </v-snackbar>
     </template>
   </center>
 </template>
 
-<style lang="scss">
-  .mixer-section {
-    padding: 0 40px;
-    .mixer-widgets-wrapper {
-      text-align: left;
-      margin: 50px 6% 0;
-      max-width: 690px;
-    }
-    .mixer-area {
-      position: relative;
-      .widget-loader {
-        top: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 300px;
-        width: 100%;
-      }
-    }
-  }
-  // Popup styles
-  .popup-header {
-    color: var(--color-primary);
-    position: relative;
-    top: 10px;
-    margin-top: 10px;
-  }
-  // Process start button
-  .start-mix-btn {
-    background-color: #03a9f4;
-    color: white;
-    font-size: 30px;
-    font-weight: bold;
-    height: 70px;
-    min-width: 90px;
-    padding: 0 30px;
-    text-align: center;
-    text-transform: uppercase;
-    transition: opacity 0.2s ease;
-    margin: 0 auto 20px;
-    &:hover {
-      opacity: 0.9;
-    }
-  }
-</style>
+<style src="../../assets/styles/components/mixer.scss" lang="scss"></style>
 
 <script lang="ts">
   import Vue from "vue";
+  import axios from "axios";
   import {mapState, mapMutations, mapGetters} from "vuex";
-  import Intro from "./Intro.vue";
-  import Widget from "./Widget.vue";
-  import Code from "./Code.vue";
-  import PayoutSettingsPopup from "./popups/PayoutSettings.vue";
-  import CouponCodePopup from "./popups/Coupon.vue";
-  import AnimatedHomeButton from "../content/AnimatedHomeButton.vue";
+  import validator from "../../helpers/validations/mix";
+  // Components
+  import SettingsPopup from "./popups/PayoutSettings.vue";
+  import CouponPopup from "./popups/Coupon.vue";
+  import IntroSection from "./Intro.vue";
+  import MixerWidget from "./Widget.vue";
+  import MixerCode from "./Code.vue";
+  import AnimatedBtn from "../content/AnimatedHomeButton.vue";
+  import {Result} from "@/store/types";
+
+  interface Widget {
+    address: string;
+    delay: number;
+    amount: number;
+    percentage: number;
+  }
 
   export default Vue.extend({
-    name: "Mixer",
+    name: "MixerSection",
+    components: {
+      "payout-settings-popup": SettingsPopup,
+      "coupon-code-popup": CouponPopup,
+      "intro-section": IntroSection,
+      "mixer-widget": MixerWidget,
+      "mixer-code": MixerCode,
+      "animated-home-button": AnimatedBtn
+    },
     props: {
       showWidget: Boolean
     },
-    components: {
-      "intro-section": Intro,
-      "mixer-widget": Widget,
-      "mixer-code": Code,
-      "payout-settings-popup": PayoutSettingsPopup,
-      "coupon-code-popup": CouponCodePopup,
-      "animated-home-button": AnimatedHomeButton
-    },
     data: () => ({
-      couponCode: "",
-      couponCodeError: false,
-      widgetLoading: true,
-      snackbarOpened: true,
-      alert: {
+      loading: false,
+      snackbar: {
         opened: false,
-        text: ""
+        message: ""
       }
     }),
     mounted() {
+      // Simulate widget loading
       setTimeout(() => {
-        this.widgetLoading = false;
-        this.snackbarOpened = true;
+        this.loading = false;
       }, 2000);
     },
-    methods: {
-      ...mapMutations(["toggleSettingsPopup", "toggleCouponPopup", "addWidget", "removeWidget"]),
-      startMixing() {
-        const {totalWidgets, widgets} = this;
-        const addressRegex = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/;
-        const amountRegex = !/^\d\d*(\.\d+)?$/;
-
-        // First address is empty
-        if (totalWidgets === 1 && !widgets[0].address)
-          return this.showAlert("You must specify at least 1 values");
-        // Total payout percentage must be equal to 100%
-        if (this.payoutMethod === "percentage" && this.totalPercentage !== 100)
-          return this.showAlert("The total payout amount must be equal to 100%");
-        // Total payout amount must be greater than
-
-        if (this.payoutMethod === "amount" && parseFloat(this.totalAmount) !== 100)
-          return this.showAlert("The total payout amount must be 100%");
-        for (const widget of widgets) {
-          if (this.payoutMethod === "amount" && (!(widget.amount) || !(amountRegex.test(widget.amount)))) {
-            return this.showAlert(`payoutAddresses.${widget.number - 1}.payoutPercentage is invalid`);
-          if (!widget.address)
-            return this.showAlert(
-              `payoutAddresses.${widget.number - 1}.payoutPercentage is invalid`
-            );
-          else if (!addressRegex.test(widget.address))
-            return this.showAlert(`payoutAddresses.${widget.number - 1}.address is invalid`);
-        }
-      },
-      showAlert(text: string): void {
-        this.alert.opened = true;
-        this.alert.text = text;
-      }
-    },
     computed: {
-      ...mapState(["widgets", "payoutMethod"]),
-      ...mapGetters(["totalPercentage", "totalWidgets"])
+      ...mapState(["payoutMethod", "widgets"]),
+      ...mapGetters(["totalWidgets", "totalPercentage", "totalAmount"])
+    },
+    methods: {
+      mix() {
+        if (!validator(this.displayError, this.payoutMethod, this.widgets)) return;
+        const widgets = this.widgets.map((widget: Widget) => {
+          const {address, delay, amount, percentage} = widget;
+          const data: {[key: string]: string | number} = {address, delay};
+          if (this.payoutMethod === "percentage") {
+            if (this.widgets.length === 1) data["percentage"] = 100;
+            else data["percentage"] = percentage;
+          } else data["amount"] = amount;
+          return data;
+        });
+
+        // Validation passed
+        axios
+          .post(
+            "http://localhost:8000/api/mix",
+            {method: this.payoutMethod, payouts: widgets},
+            {responseType: "json"}
+          )
+          .then((res) => {
+            const data = res.data as Result;
+            this.setResult(data);
+            this.$router.push(`/mix/${data.mix}/complete`);
+          })
+          .catch((err) => console.error(err));
+      },
+      displayError(message: string) {
+        this.snackbar.opened = true;
+        this.snackbar.message = message;
+      },
+      ...mapMutations(["setResult"])
     }
   });
 </script>

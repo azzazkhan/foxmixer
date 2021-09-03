@@ -1,9 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import {Result, State} from "./types";
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+const store = new Vuex.Store<State>({
   state: {
     payoutSettingsPopupOpened: false,
     couponCodePopupOpened: false,
@@ -16,7 +17,13 @@ const store = new Vuex.Store({
         percentage: 100,
         amount: ""
       }
-    ]
+    ],
+    result: {
+      address: "",
+      code: "",
+      mix: "",
+      payout_1: null
+    }
   },
   mutations: {
     // Single widget specific mutations
@@ -48,17 +55,22 @@ const store = new Vuex.Store({
     },
     // Widget manipulation mutations
     addWidget(state) {
+      const percentage = state.widgets.length == 2 ? 12 : 16;
+
       state.widgets.length < 3 &&
         state.widgets.push({
           number: state.widgets.length + 1,
           address: "",
           delay: 16,
-          percentage: 0,
+          percentage,
           amount: ""
         });
     },
     removeWidget(state) {
       state.widgets.length > 1 && state.widgets.pop();
+    },
+    setResult(state, result: Result) {
+      state.result = result;
     }
   },
   getters: {
@@ -72,7 +84,8 @@ const store = new Vuex.Store({
       state.widgets.map((widget) => widget.percentage).reduce((p, c) => p + c, 0),
     percentages: (state) => state.widgets.map((widget) => widget.percentage),
     totalAmount: (state) =>
-      state.widgets.map((widget) => parseFloat(widget.amount)).reduce((p, c) => p + c, 0)
+      state.widgets.map((widget) => parseFloat(widget.amount)).reduce((p, c) => p + c, 0),
+    bitcoinAddress: (state) => state.result.address
   }
 });
 
