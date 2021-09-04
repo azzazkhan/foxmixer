@@ -23,6 +23,7 @@ const store = new Vuex.Store<State>({
       }
     ],
     result: {
+      loaded: false,
       address: "",
       code: "",
       mix: "",
@@ -76,9 +77,9 @@ const store = new Vuex.Store<State>({
     setResult(state, result: Result) {
       state.result = result;
     },
-    setLoader(state, loading?: boolean, text?: string) {
-      state.loader.loading = typeof loading === "boolean" ? loading : !state.loader.loading;
-      state.loader.text = text ?? undefined;
+    setLoader(state, payload: {loading: boolean; text?: string}) {
+      const {loading, text = undefined} = payload;
+      state.loader = {loading, text};
     }
   },
   getters: {

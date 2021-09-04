@@ -1,6 +1,10 @@
 <template>
   <page class="status-page">
-    <div class="page-content-wrapper">
+    <mix-validator @error="handleError" overlay />
+    <div v-if="error" style="padding: 0 40px; color: #000000;">
+      An error occurred. The selected mix does not exist. Maybe it expired or the link is wrong.
+    </div>
+    <div v-if="!error && result.loaded" class="page-content-wrapper">
       <div class="page-content">
         <progress-widget />
         <section class="mix-details">
@@ -89,16 +93,25 @@
 
 <script lang="ts">
   import Vue from "vue";
+  import {mapState} from "vuex";
+
+  // Components
   import Page from "../components/Page.vue";
   import ProgressWidget from "../components/status/ProgressWidget.vue";
   import TooltipCell from "../components/status/TooltipCell.vue";
+  import Validator from "../components/MixValidator.vue";
 
   export default Vue.extend({
     name: "Status",
     components: {
       page: Page,
       "progress-widget": ProgressWidget,
-      "tooltip-cell": TooltipCell
-    }
+      "tooltip-cell": TooltipCell,
+      "mix-validator": Validator
+    },
+    data: () => ({
+      error: false
+    }),
+    computed: mapState(["result"])
   });
 </script>

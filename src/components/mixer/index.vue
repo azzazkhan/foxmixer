@@ -117,18 +117,18 @@
           } else data["amount"] = amount;
           return data;
         });
-        this.setLoader(true, "Your mix is being generated...");
+        this.setLoader({loading: true, text: "Your mix is being generated..."});
         // Validation passed
         axios
           .post(API_URL, {method: this.payoutMethod, payouts: widgets}, {responseType: "json"})
           .then((res) => {
             const data = res.data as Result;
-            this.setResult(data);
-            this.setLoader(false, "");
+            this.setResult({...data, loaded: true});
+            this.setLoader({loading: false, text: ""});
             this.$router.push(`/mix/${data.mix}/complete`);
           })
           .catch((err) => {
-            this.setLoader(false, "");
+            this.setLoader({loading: false, text: ""});
             this.displayError("An error occurred!");
             console.error(err);
           });

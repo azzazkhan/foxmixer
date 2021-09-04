@@ -1,7 +1,10 @@
 <template>
   <page class="mix-complete-page">
-    <mix-validator />
-    <div class="completion-wrapper">
+    <mix-validator @error="handleError" />
+    <div v-if="error" style="padding: 0 40px; color: #000000;">
+      An error occurred. The selected mix does not exist. Maybe it expired or the link is wrong.
+    </div>
+    <div v-else class="completion-wrapper">
       <div class="content-holder">
         <h3>Your mix has been generated</h3>
         <table class="content-aligner">
@@ -16,8 +19,8 @@
                   <div class="address-box">
                     <div class="header">Bitcoin address</div>
                     <span class="btc-address">
-                      <a :href="`bitcoin:${bitcoinAddress}`">
-                        {{ bitcoinAddress }}
+                      <a :href="result.loaded ? `bitcoin:${bitcoinAddress}` : '#'">
+                        {{ result.loaded ? bitcoinAddress : "Loading...." }}
                       </a>
                     </span>
                     <button class="view-toggler">
@@ -55,11 +58,18 @@
                 <div class="download-letterbox">
                   <div class="header">Letter of Guarantee</div>
                   <div class="content">
-                    <a href="/LetterOfGuarantee.txt" download>
+                    <a
+                      v-if="result.loaded"
+                      :href="
+                        `http://localhost:8000/mix/${$route.params.mixCode}/LetterOfGuarantee.txt`
+                      "
+                      download
+                    >
                       <img src="../assets/images/icons/download_24.png" alt="Image not available" />
                       <br />
                       <p style="color: #03a9f4">Download now</p>
                     </a>
+                    <span v-else style="display: block;margin-bottom: 20px;">Loading...</span>
                   </div>
                 </div>
               </td>
@@ -327,7 +337,7 @@
 
 <script lang="ts">
   import Vue from "vue";
-  import {mapGetters, mapState} from "vuex";
+  import {mapGetters, mapState, mapMutations} from "vuex";
 
   // Components
   import Page from "../components/Page.vue";
@@ -342,7 +352,8 @@
     data: () => ({
       btcAmount: "",
       btcAmountError: false,
-      amountTableVisible: false
+      amountTableVisible: false,
+      error: false
     }),
     watch: {
       btcAmount(amount) {
@@ -357,7 +368,14 @@
     },
     computed: {
       ...mapGetters(["bitcoinAddress", "totalWidgets", "totalAmount"]),
-      ...mapState(["widgets"])
+      ...mapState(["widgets", "result"])
+    },
+    methods: {
+      ...mapMutations(["setLoader"]),
+      handleError() {
+        console.log("Error occurred");
+        this.error = true;
+      }
     }
   });
 </script>

@@ -18,6 +18,7 @@ export interface Payout {
 }
 
 export interface Result {
+  loaded: boolean;
   address: string;
   code: string;
   mix: string;
