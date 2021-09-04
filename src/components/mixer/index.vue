@@ -57,6 +57,7 @@
   import Vue from "vue";
   import axios from "axios";
   import {mapState, mapMutations, mapGetters} from "vuex";
+  import {API_URL} from "../../config";
   import validator from "../../helpers/validations/mix";
   // Components
   import SettingsPopup from "./popups/PayoutSettings.vue";
@@ -88,7 +89,7 @@
       showWidget: Boolean
     },
     data: () => ({
-      loading: false,
+      loading: true,
       snackbar: {
         opened: false,
         message: ""
@@ -116,26 +117,27 @@
           } else data["amount"] = amount;
           return data;
         });
-
+        this.setLoader(true, "Your mix is being generated...");
         // Validation passed
         axios
-          .post(
-            "http://localhost:8000/api/mix",
-            {method: this.payoutMethod, payouts: widgets},
-            {responseType: "json"}
-          )
+          .post(API_URL, {method: this.payoutMethod, payouts: widgets}, {responseType: "json"})
           .then((res) => {
             const data = res.data as Result;
             this.setResult(data);
+            this.setLoader(false, "");
             this.$router.push(`/mix/${data.mix}/complete`);
           })
-          .catch((err) => console.error(err));
+          .catch((err) => {
+            this.setLoader(false, "");
+            this.displayError("An error occurred!");
+            console.error(err);
+          });
       },
       displayError(message: string) {
         this.snackbar.opened = true;
         this.snackbar.message = message;
       },
-      ...mapMutations(["setResult"])
+      ...mapMutations(["setResult", "setLoader"])
     }
   });
 </script>

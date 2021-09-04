@@ -9,6 +9,10 @@ const store = new Vuex.Store<State>({
     payoutSettingsPopupOpened: false,
     couponCodePopupOpened: false,
     payoutMethod: "percentage", // percentage | amount
+    loader: {
+      loading: false,
+      text: undefined
+    },
     widgets: [
       {
         number: 1, // Current number of widget
@@ -71,6 +75,10 @@ const store = new Vuex.Store<State>({
     },
     setResult(state, result: Result) {
       state.result = result;
+    },
+    setLoader(state, loading?: boolean, text?: string) {
+      state.loader.loading = typeof loading === "boolean" ? loading : !state.loader.loading;
+      state.loader.text = text ?? undefined;
     }
   },
   getters: {

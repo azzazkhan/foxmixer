@@ -35,3 +35,15 @@ h6 {
 .color-custom-primary {
   color: var(--color-primary);
 }
+
+input {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+}

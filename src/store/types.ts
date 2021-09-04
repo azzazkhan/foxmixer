@@ -26,9 +26,15 @@ export interface Result {
   payout_3?: Payout;
 }
 
+export interface Loader {
+  loading: boolean;
+  text?: string;
+}
+
 export interface State {
   payoutSettingsPopupOpened: boolean;
   couponCodePopupOpened: boolean;
+  loader: Loader;
   payoutMethod: PayoutMethod;
   widgets: Widget[];
   result: Result;

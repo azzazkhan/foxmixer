@@ -1,0 +1,38 @@
+.loading-overlay {
+  position: fixed;
+  background-color: #ffffff;
+  top: var(--header-height);
+  display: none;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  visibility: visible;
+  justify-content: center;
+  align-items: flex-start;
+  &.visible {
+    display: flex;
+  }
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px 20px;
+}
+
+.logo-wrapper {
+  margin-bottom: 60px;
+  img {
+    border-radius: 2px;
+    height: 150px;
+    width: 150px;
+  }
+}
+
+.text-wrapper {
+  color: black;
+  margin-top: 25px;
+}

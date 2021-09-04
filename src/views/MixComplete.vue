@@ -1,5 +1,6 @@
 <template>
   <page class="mix-complete-page">
+    <mix-validator />
     <div class="completion-wrapper">
       <div class="content-holder">
         <h3>Your mix has been generated</h3>
@@ -15,8 +16,8 @@
                   <div class="address-box">
                     <div class="header">Bitcoin address</div>
                     <span class="btc-address">
-                      <a href="bitcoin:3MRJ7YFRQJ8LuKACcgR9KtSBTeJYDDTv4u">
-                        3MRJ7YFRQJ8LuKACcgR9KtSBTeJYDDTv4u
+                      <a :href="`bitcoin:${bitcoinAddress}`">
+                        {{ bitcoinAddress }}
                       </a>
                     </span>
                     <button class="view-toggler">
@@ -330,11 +331,13 @@
 
   // Components
   import Page from "../components/Page.vue";
+  import Validator from "../components/MixValidator.vue";
 
   export default Vue.extend({
     name: "MixComplete",
     components: {
-      page: Page
+      page: Page,
+      "mix-validator": Validator
     },
     data: () => ({
       btcAmount: "",
