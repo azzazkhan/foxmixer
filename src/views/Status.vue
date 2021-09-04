@@ -1,8 +1,8 @@
 <template>
   <page class="status-page">
     <mix-validator @error="handleError" overlay />
-    <div v-if="error" style="padding: 0 40px; color: #000000;">
-      An error occurred. The selected mix does not exist. Maybe it expired or the link is wrong.
+    <div v-if="error" style="padding: 40px; color: #000000;">
+      An error occurred: The selected mix does not exist. Maybe it expired or the link is wrong.
     </div>
     <div v-if="!error && result.loaded" class="page-content-wrapper">
       <div class="page-content">
@@ -16,28 +16,28 @@
                   The address to send your<br />
                   bitcoins to
                 </tooltip-cell>
-                <td style="font-weight: bold">3KPz8DAhrzkZHUwquEJaAVTX1oZfXjJn6a</td>
+                <td style="font-weight: bold" v-text="result.address"></td>
               </tr>
               <tr>
                 <tooltip-cell label="Mixcode">
                   The mixcode to use for<br />
                   creating further mixes
                 </tooltip-cell>
-                <td>9dsAd</td>
+                <td v-text="result.code"></td>
               </tr>
               <tr>
                 <tooltip-cell label="Creation date">
                   The date when this mix was<br />
                   created
                 </tooltip-cell>
-                <td>Thu, 30 Aug 2021 19:05:18 GMT</td>
+                <td>{{ result.created }} GMT</td>
               </tr>
               <tr>
                 <tooltip-cell label="Valid until">
                   The date when this mix will be<br />
                   deleted automatically
                 </tooltip-cell>
-                <td>Thu, 02 Sep 2021 19:05:18 GMT</td>
+                <td>{{ result.expiry }} GMT</td>
               </tr>
               <tr>
                 <tooltip-cell label="Amount of bitcoins received">
@@ -93,7 +93,7 @@
 
 <script lang="ts">
   import Vue from "vue";
-  import {mapState} from "vuex";
+  import {mapGetters, mapState, mapMutations} from "vuex";
 
   // Components
   import Page from "../components/Page.vue";
@@ -112,6 +112,15 @@
     data: () => ({
       error: false
     }),
-    computed: mapState(["result"])
+    computed: {
+      ...mapState(["result"]),
+      ...mapGetters(["bitcoinAddress"])
+    },
+    methods: {
+      handleError() {
+        console.log("Error occurred");
+        this.error = true;
+      }
+    }
   });
 </script>

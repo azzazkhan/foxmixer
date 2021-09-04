@@ -25,6 +25,9 @@ export interface Result {
   payout_1: Payout | null;
   payout_2?: Payout;
   payout_3?: Payout;
+  created: string;
+  created_min: string;
+  expiry: string;
 }
 
 export interface Loader {

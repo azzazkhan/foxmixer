@@ -27,7 +27,10 @@ const store = new Vuex.Store<State>({
       address: "",
       code: "",
       mix: "",
-      payout_1: null
+      payout_1: null,
+      created: "",
+      created_min: "",
+      expiry: ""
     }
   },
   mutations: {

@@ -2,7 +2,7 @@
   <page class="mix-complete-page">
     <mix-validator @error="handleError" />
     <div v-if="error" style="padding: 0 40px; color: #000000;">
-      An error occurred. The selected mix does not exist. Maybe it expired or the link is wrong.
+      An error occurred: The selected mix does not exist. Maybe it expired or the link is wrong.
     </div>
     <div v-else class="completion-wrapper">
       <div class="content-holder">
