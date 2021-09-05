@@ -58,13 +58,7 @@
                 <div class="download-letterbox">
                   <div class="header">Letter of Guarantee</div>
                   <div class="content">
-                    <a
-                      v-if="result.loaded"
-                      :href="
-                        `http://localhost:8000/mix/${$route.params.mixCode}/LetterOfGuarantee.txt`
-                      "
-                      download
-                    >
+                    <a v-if="result.loaded" :href="getLogURL($route.params.mixCode)" download>
                       <img src="../assets/images/icons/download_24.png" alt="Image not available" />
                       <br />
                       <p style="color: #03a9f4">Download now</p>
@@ -338,6 +332,7 @@
 <script lang="ts">
   import Vue from "vue";
   import {mapGetters, mapState, mapMutations} from "vuex";
+  import {getLogURL} from "@/config";
 
   // Components
   import Page from "../components/Page.vue";
@@ -375,7 +370,8 @@
       handleError() {
         console.log("Error occurred");
         this.error = true;
-      }
+      },
+      getLogURL
     }
   });
 </script>

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, {RouteConfig} from "vue-router";
 import Home from "../views/Home.vue";
+import Error from "../views/Error.vue";
 
 Vue.use(VueRouter);
 
@@ -10,7 +11,8 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    meta: {title: "FoxMixer - High Quality Bitcoin Mixer"}
   },
   {
     path: "/mixer",
@@ -71,6 +73,12 @@ const routes: Array<RouteConfig> = [
     name: "MixStatus",
     component: () => import(/* webpackChunkName: "mixStatus" */ "../views/Status.vue"),
     meta: {title: "FoxMixer - Status of Mix"}
+  },
+  {
+    path: "*",
+    name: "Error",
+    component: Error,
+    meta: {title: "FoxMixer"}
   }
 ];
 
