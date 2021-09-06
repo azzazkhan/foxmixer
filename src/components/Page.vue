@@ -17,7 +17,6 @@
     flex-direction: column;
     justify-content: space-between;
     margin-top: var(--header-height);
-    padding-bottom: 2px;
     &.page-home {
       padding-top: 50px;
     }

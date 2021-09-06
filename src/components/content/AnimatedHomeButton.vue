@@ -5,7 +5,7 @@
       <button @click="$router.push('/mixer')">Start Mixing</button>
       <img src="../../assets/images/arrow.svg" class="right" alt="Image not available" />
     </center>
-    <a class="more-text">Learn more...</a>
+    <router-link to="/why" class="more-text">Learn more...</router-link>
   </div>
 </template>
 

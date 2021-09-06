@@ -75,6 +75,12 @@ const routes: Array<RouteConfig> = [
     meta: {title: "FoxMixer - Status of Mix"}
   },
   {
+    path: "/why",
+    name: "Why",
+    component: () => import(/* webpackChunkName: "why" */ "../views/Why.vue"),
+    meta: {title: "FoxMixer - Why You should Mix Your Bitcoins"}
+  },
+  {
     path: "*",
     name: "Error",
     component: Error,
