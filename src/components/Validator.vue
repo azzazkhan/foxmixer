@@ -3,7 +3,7 @@
 <script lang="ts">
   import Vue from "vue";
   import {Result} from "@/store/types";
-  import {mapState, mapMutations} from "Vuex";
+  import {mapState, mapMutations} from "vuex";
   import axios from "axios";
   import {API_URL} from "@/config";
 
