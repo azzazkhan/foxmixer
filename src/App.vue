@@ -20,6 +20,9 @@
     components: {
       Header,
       Loader
+    },
+    created() {
+      document.getElementById("loader")?.style.display = "none";
     }
   });
 </script>

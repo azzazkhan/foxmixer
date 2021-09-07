@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px"
+	 height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+<g>
+	<rect x="-5" y="-4.998" display="none" fill="#03589C" width="110" height="109.998"/>
+	<path fill="#03589C" d="M100,97.272c0,1.507-1.221,2.728-2.728,2.728H2.728C1.221,100,0,98.779,0,97.272V2.729
+		c0-1.506,1.221-2.727,2.728-2.727h94.545c1.507,0,2.728,1.221,2.728,2.727V97.272z"/>
+	<polygon fill="#41B2E6" points="10,10.002 10,50.002 50,89.997 89.999,50.002 89.999,10.002 50,50.002 	"/>
+	<polygon fill="#E1F2FC" points="50,89.997 65.282,74.719 34.717,74.719 	"/>
+	<polygon fill="#E1F2FC" points="10,50.002 25.675,45.677 30.001,30.001 10,10.002 	"/>
+	<polygon fill="#E1F2FC" points="70,30.002 85.675,34.327 89.999,50.002 89.999,10.002 	"/>
+</g>
+</svg>
