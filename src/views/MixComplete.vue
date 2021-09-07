@@ -41,13 +41,15 @@
                     </span>
                     <div class="qr-wrapper" v-if="addressType === 'image'">
                       <img
-                        src="../assets/images/qr.jpeg?v=2"
+                        v-show="result.loaded"
+                        src="../assets/images/qr.png?v=2"
                         class="qr-image"
                         alt="BTC Wallet QR"
                       />
+                      <div class="placeholder" v-if="!result.loaded">Loading....</div>
                     </div>
                     <button class="view-toggler" @click.prevent="toggleAddress">
-                      <v-tooltip bottom v-if="result.loaded">
+                      <v-tooltip bottom v-if="addressType === 'string'">
                         <template v-slot:activator="{on, attrs}">
                           <span v-bind="attrs" v-on="on">
                             <v-icon color="#01579b" dense>
@@ -57,6 +59,18 @@
                         </template>
                         <small class="custom-tooltip">
                           Show QR code
+                        </small>
+                      </v-tooltip>
+                      <v-tooltip bottom v-if="addressType === 'image'">
+                        <template v-slot:activator="{on, attrs}">
+                          <span v-bind="attrs" v-on="on">
+                            <v-icon color="#01579b" dense>
+                              mdi-text-subject
+                            </v-icon>
+                          </span>
+                        </template>
+                        <small class="custom-tooltip">
+                          Show bitcoin address
                         </small>
                       </v-tooltip>
                     </button>
@@ -208,7 +222,7 @@
       btcAmountError: false,
       amountTableVisible: false,
       error: false,
-      addressType: "image" // "string" || "image"
+      addressType: "string" // "string" || "image"
     }),
     watch: {
       btcAmount(amount) {
@@ -220,11 +234,6 @@
         this.btcAmountError = true;
         this.amountTableVisible = false;
       }
-    },
-    mounted() {
-      // setInterval(() => {
-      //   this.addressType = this.addressType === "string" ? "image" : "string";
-      // }, 3000);
     },
     computed: {
       ...mapGetters(["bitcoinAddress", "resultantPayouts", "totalAmount"]),
