@@ -13,8 +13,8 @@
       </h3>
     </div>
     <div class="logo-wrapper">
-      <img src="../../assets/images/logo-big.svg" alt="FoxMixer" />
-      <video v-if="animateLogo" class="video" autoplay muted preload="auto">
+      <img src="../../assets/images/logo-big.svg" @contextmenu.prevent alt="FoxMixer" />
+      <video v-if="animateLogo" @contextmenu.prevent class="video" autoplay muted preload="auto">
         <source src="../../assets/logo-animation.mp4" type="video/mp4" />
         FoxMixer Animated Logo
       </video>
