@@ -14,117 +14,15 @@
     </div>
     <div class="logo-wrapper">
       <img src="../../assets/images/logo-big.svg" alt="FoxMixer" />
+      <video v-if="animateLogo" class="video" autoplay muted preload="auto">
+        <source src="../../assets/logo-animation.mp4" type="video/mp4" />
+        FoxMixer Animated Logo
+      </video>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .intro-section {
-    color: var(--color-primary);
-    display: flex;
-    width: 80%;
-    margin-bottom: 10px;
-    .text-wrapper {
-      text-align: center;
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: stretch;
-      .intro-title {
-        font-size: 56px;
-        line-height: 1.3em;
-        letter-spacing: -1px;
-        margin-bottom: 20px;
-        .to {
-          margin-right: -15px;
-          margin-left: -15px;
-          padding: 0 !important;
-        }
-      }
-      .intro-description {
-        position: relative;
-        font-size: 34px;
-        line-height: 1.2em;
-      }
-    }
-    .logo-wrapper {
-      display: none;
-      img {
-        height: 134px;
-        width: 134px;
-        border-radius: 4px;
-      }
-    }
-    @media (min-width: 1100px) {
-      padding-left: 10px;
-      width: auto;
-      display: inline-flex;
-      margin-left: 50px;
-      .text-wrapper {
-        text-align: left;
-        justify-content: flex-start;
-      }
-      .logo-wrapper {
-        display: block;
-        position: relative;
-        left: 50px;
-      }
-    }
-    &.animate {
-      .text-wrapper {
-        span {
-          visibility: hidden;
-          &.visible {
-            visibility: visible;
-          }
-        }
-        .intro-description {
-          top: 20px;
-          transition: all 1s ease;
-          &::before {
-            content: "";
-            position: absolute;
-            background-color: white !important;
-            top: 0px;
-            left: 0;
-            display: block;
-            height: 100%;
-            width: 100%;
-            transition: all 1s ease;
-          }
-          &.animate {
-            top: 0;
-            &::before {
-              top: 100% !important;
-            }
-          }
-        }
-      }
-      .logo-wrapper {
-        animation-name: animateIntroLogo;
-        animation-duration: 2000ms;
-        animation-timing-function: ease;
-        animation-iteration-count: 1;
-        animation-fill-mode: forwards;
-      }
-    }
-  }
-  @keyframes animateIntroLogo {
-    0% {
-      opacity: 0;
-      filter: blur(5px);
-      transform: scale(1.6);
-    }
-    20% {
-      opacity: 100%;
-    }
-    100% {
-      filter: blur(0);
-      transform: scale(1);
-    }
-  }
-</style>
+<style src="../../assets/styles/pages/mixer_intro.scss" lang="scss" scoped></style>
 
 <script lang="ts">
   import Vue from "vue";
@@ -138,7 +36,8 @@
       animateFirst: false,
       animateSecond: false,
       animateThird: false,
-      animatedDescription: false
+      animatedDescription: false,
+      animateLogo: false
     }),
     mounted() {
       setTimeout(() => {
@@ -146,6 +45,10 @@
       }, 1000);
       setTimeout(() => {
         this.animateSecond = true;
+        this.animateLogo = true;
+        setTimeout(() => {
+          this.animateLogo = false;
+        }, 4000);
       }, 1500);
       setTimeout(() => {
         this.animateThird = true;

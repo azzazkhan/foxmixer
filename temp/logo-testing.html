@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logo Animation</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+
+      .logo-wrapper {
+        overflow: hidden;
+        height: 134px;
+        width: 134px;
+        border-radius: 2px;
+      }
+
+      .background {
+        position: relative;
+      }
+
+      .background,
+      .logo,
+      .video {
+        height: 100%;
+        width: 100%;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .video {
+        position: absolute;
+        top: calc(50% - 2px);
+        left: calc(50% - 2px);
+        transform: translate(-50%, -50%) scale(0.97);
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        const video = document.getElementsByClassName("video")[0];
+        if (!video) return;
+        video.addEventListener(
+          "canplaythrough",
+          function(e) {
+            setTimeout(function() {
+              e.target.style.display = "none";
+            }, 4000);
+          },
+          {once: true}
+        );
+        console.log(video);
+      };
+    </script>
+  </head>
+  <body>
+    <div class="logo-wrapper">
+      <div class="background">
+        <img src="./src/assets/images/logo-big.svg" class="logo" alt="Logo" />
+        <video class="video" autoplay muted preload="auto">
+          <source src="./src/assets/logo-animation.mp4" type="video/mp4" />
+          FoxMixer Animated Logo
+        </video>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+.intro-section {
+  color: var(--color-primary);
+  display: flex;
+  width: 80%;
+  margin-bottom: 10px;
+  .text-wrapper {
+    text-align: center;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    .intro-title {
+      font-size: 56px;
+      line-height: 1.3em;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      .to {
+        margin-right: -15px;
+        margin-left: -15px;
+        padding: 0 !important;
+      }
+    }
+    .intro-description {
+      position: relative;
+      font-size: 34px;
+      line-height: 1.2em;
+    }
+  }
+  .logo-wrapper {
+    display: none;
+  }
+  @media (min-width: 1100px) {
+    padding-left: 10px;
+    width: auto;
+    display: inline-flex;
+    margin-left: 50px;
+    .text-wrapper {
+      text-align: left;
+      justify-content: flex-start;
+    }
+    .logo-wrapper {
+      position: relative;
+      display: block;
+      height: 134px;
+      width: 134px;
+      left: 50px;
+      img,
+      video {
+        height: 134px;
+        width: 134px;
+        border-radius: 2px;
+      }
+      video {
+        position: absolute;
+        top: calc(50% - 2px);
+        left: calc(50% - 2px);
+        display: none;
+        transform: translate(-50%, -50%) scale(0.97);
+      }
+    }
+  }
+  &.animate {
+    .text-wrapper {
+      span {
+        visibility: hidden;
+        &.visible {
+          visibility: visible;
+        }
+      }
+      .intro-description {
+        top: 20px;
+        transition: all 1s ease;
+        &::before {
+          content: "";
+          position: absolute;
+          background-color: white !important;
+          top: 0px;
+          left: 0;
+          display: block;
+          height: 100%;
+          width: 100%;
+          transition: all 1s ease;
+        }
+        &.animate {
+          top: 0;
+          &::before {
+            top: 100% !important;
+          }
+        }
+      }
+    }
+    .logo-wrapper {
+      animation-name: animateIntroLogo;
+      animation-duration: 2000ms;
+      animation-timing-function: ease;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+      video {
+        display: block;
+      }
+    }
+  }
+}
+@keyframes animateIntroLogo {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: scale(1.6);
+  }
+  20% {
+    opacity: 100%;
+  }
+  100% {
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
