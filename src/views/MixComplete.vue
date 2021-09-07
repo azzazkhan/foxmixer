@@ -16,18 +16,54 @@
               <td>
                 <h4>1. Send your bitcoins to the following address</h4>
                 <div class="bitcoin-address-wrapper">
-                  <div class="address-box">
-                    <div class="header">Bitcoin address</div>
-                    <span class="btc-address">
+                  <div
+                    :class="{
+                      'address-box': true,
+                      'qr-box': addressType === 'image'
+                    }"
+                  >
+                    <div class="header">
+                      {{ addressType === "string" ? "Bitcoin address" : "QR code" }}
+                    </div>
+                    <span class="btc-address" v-if="addressType === 'string'">
                       <a :href="result.loaded ? `bitcoin:${bitcoinAddress}` : '#'">
-                        {{ result.loaded ? bitcoinAddress : "Loading...." }}
+                        <v-tooltip bottom v-if="result.loaded">
+                          <template v-slot:activator="{on, attrs}">
+                            <span v-bind="attrs" v-on="on">{{ bitcoinAddress }}</span>
+                          </template>
+                          <small class="custom-tooltip">
+                            Send the bitcoins that should<br />
+                            be mixed to this address
+                          </small>
+                        </v-tooltip>
+                        <span v-if="!result.loaded">Loading....</span>
                       </a>
                     </span>
-                    <button class="view-toggler">
-                      <v-icon color="#01579b" dense>mdi-gradient</v-icon>
+                    <div class="qr-wrapper" v-if="addressType === 'image'">
+                      <img
+                        src="../assets/images/qr.jpeg?v=2"
+                        class="qr-image"
+                        alt="BTC Wallet QR"
+                      />
+                    </div>
+                    <button class="view-toggler" @click.prevent="toggleAddress">
+                      <v-tooltip bottom v-if="result.loaded">
+                        <template v-slot:activator="{on, attrs}">
+                          <span v-bind="attrs" v-on="on">
+                            <v-icon color="#01579b" dense>
+                              mdi-gradient
+                            </v-icon>
+                          </span>
+                        </template>
+                        <small class="custom-tooltip">
+                          Show QR code
+                        </small>
+                      </v-tooltip>
                     </button>
                   </div>
-                  <div class="copy-address-btn">Copy to clipboard</div>
+                  <div class="copy-address-btn" v-if="addressType === 'string'">
+                    Copy to clipboard
+                  </div>
                 </div>
                 <div class="transaction-btc-amount">
                   <p>Send at least 0.00200000 BTC to this address.</p>
@@ -105,10 +141,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="widget in widgets" :key="widget.number">
-                        <td>{{ widget.address }}</td>
+                      <tr v-for="payout in resultantPayouts" :key="payout.timestamp">
+                        <td>{{ payout.address }}</td>
                         <td>
-                          {{ parseFloat(parseFloat(btcAmount).toFixed(8)) / totalWidgets }} BTC
+                          {{
+                            parseFloat(parseFloat(btcAmount).toFixed(8)) / resultantPayouts.length
+                          }}
+                          BTC
                         </td>
                       </tr>
                     </tbody>
@@ -123,207 +162,27 @@
   </page>
 </template>
 
+<style src="../assets/styles/pages/mix_complete.scss" lang="scss" scoped></style>
+
 <style lang="scss">
-  .completion-wrapper {
-    padding: 0 40px 40px;
-    .content-holder {
-      margin: 0 15%;
-      h3 {
+  .btc-amount-table-collapse {
+    .v-banner__wrapper {
+      padding: 0 !important;
+      border: 0 !important;
+    }
+    table.btc-amount-table {
+      text-align: left;
+      border-collapse: collapse;
+      white-space: nowrap;
+      thead th,
+      tbody,
+      td {
+        border: 1px solid #03a9f4;
+        padding: 5px 30px 5px 5px;
+      }
+      thead th {
         color: var(--color-primary);
-        margin-bottom: 10px;
-        font-size: 34px;
-        line-height: 40px;
-      }
-      table.content-aligner {
-        margin: 0;
-        margin-left: -100px;
-        padding: 0;
-        border-collapse: collapse;
-        tr td {
-          &:first-of-type {
-            width: 100px;
-            vertical-align: top;
-          }
-          h4 {
-            color: var(--color-primary);
-            font-size: 30px;
-            font-weight: 400;
-            line-height: 32px;
-            margin: 30px 0 15px;
-          }
-          p {
-            color: black;
-            font-size: 18px;
-          }
-          .bitcoin-address-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            margin-top: 10px;
-            margin-bottom: 8px;
-            .address-box {
-              position: relative;
-              background-color: #e1f5fe;
-              font-size: 18px;
-              font-weight: bold;
-              letter-spacing: 0.4px;
-              line-height: 18.4px;
-              flex-grow: 2;
-              max-width: 500px;
-              margin: 6px 10px 6px 0;
-              padding: 32px 14px 16px;
-              border: 2px solid #03a9f4;
-              border-radius: 2px;
-              .header {
-                position: absolute;
-                color: white;
-                background-color: #03a9f4;
-                font-size: 16px;
-                text-align: left;
-                top: 0;
-                left: 0;
-                width: 100%;
-                padding-left: 2px;
-              }
-              .btc-address {
-                a {
-                  color: #333333;
-                  display: block;
-                  width: 100%;
-                  white-space: nowrap;
-                  text-decoration: none;
-                }
-              }
-              .view-toggler {
-                position: absolute;
-                right: -6px;
-                bottom: -6px;
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-              }
-            }
-            .copy-address-btn {
-              color: white;
-              background-color: #03a9f4;
-              display: inline-flex;
-              justify-content: center;
-              align-items: center;
-              min-width: 70px;
-              margin: 6px 0;
-              padding: 7px 12px !important;
-              border-radius: 2px;
-              font-size: 15px;
-              letter-spacing: 0.5px;
-              font-weight: 300;
-              text-transform: uppercase;
-              line-height: 36px;
-              cursor: pointer;
-              &:hover {
-                background-color: #29b6f6;
-              }
-            }
-          }
-          .transaction-btc-amount {
-            margin-bottom: 10px;
-          }
-          .download-letterbox {
-            position: relative;
-            background-color: #e1f5fe;
-            max-width: 300px;
-            font-size: 16px;
-            text-align: center;
-            margin: 6px 10px 6px 0;
-            padding: 42px 10px 0px;
-            border: 2px solid #03a9f4;
-            border-radius: 2px;
-            .header {
-              position: absolute;
-              color: white;
-              background-color: #03a9f4;
-              font-size: 16px;
-              font-weight: bold;
-              text-align: left;
-              top: 0;
-              left: 0;
-              width: 100%;
-              padding-left: 2px;
-            }
-            a {
-              color: #03a9f4 !important;
-              font-size: 20px;
-              font-weight: bold;
-              text-decoration: none;
-            }
-          }
-          .continue-btn {
-            background-color: #03a9f4;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            text-decoration: none;
-            text-transform: uppercase;
-            line-height: 36px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 90px;
-            margin: 7px 0 20px 0;
-            padding: 7px 20px;
-            transition: opacity 0.2s ease;
-            border-radius: 2px;
-            &:hover {
-              opacity: 0.9;
-            }
-          }
-          .btc-amount-wrapper {
-            position: relative;
-            width: 300px;
-            padding: 20px 0;
-            .error-message {
-              position: absolute;
-              color: #de3226;
-              bottom: 18px;
-              left: 0;
-            }
-            label {
-              color: var(--color-primary) !important;
-              font-size: 18px;
-            }
-            input {
-              color: black;
-              font-size: 18px;
-              font-weight: bold;
-            }
-          }
-          .btc-amount-table-collapse {
-            .v-banner__wrapper {
-              padding: 0 !important;
-              border: 0 !important;
-            }
-            table.btc-amount-table {
-              text-align: left;
-              border-collapse: collapse;
-              white-space: nowrap;
-              thead th,
-              tbody,
-              td {
-                border: 1px solid #03a9f4;
-                padding: 5px 30px 5px 5px;
-              }
-              thead th {
-                color: var(--color-primary);
-                font-weight: bold;
-              }
-            }
-          }
-        }
-      }
-      .divider {
-        background-color: #e1f5fe;
-        height: 2px;
-        width: 100%;
-        margin: 40px 0;
+        font-weight: bold;
       }
     }
   }
@@ -348,7 +207,8 @@
       btcAmount: "",
       btcAmountError: false,
       amountTableVisible: false,
-      error: false
+      error: false,
+      addressType: "image" // "string" || "image"
     }),
     watch: {
       btcAmount(amount) {
@@ -361,8 +221,13 @@
         this.amountTableVisible = false;
       }
     },
+    mounted() {
+      // setInterval(() => {
+      //   this.addressType = this.addressType === "string" ? "image" : "string";
+      // }, 3000);
+    },
     computed: {
-      ...mapGetters(["bitcoinAddress", "totalWidgets", "totalAmount"]),
+      ...mapGetters(["bitcoinAddress", "resultantPayouts", "totalAmount"]),
       ...mapState(["widgets", "result"])
     },
     methods: {
@@ -371,7 +236,11 @@
         console.log("Error occurred");
         this.error = true;
       },
-      getLogURL
+      getLogURL,
+      toggleAddress() {
+        if (this.addressType === "string") this.addressType = "image";
+        else this.addressType = "string";
+      }
     }
   });
 </script>

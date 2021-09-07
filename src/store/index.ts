@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {Result, State} from "./types";
+import {Result, State, Payout} from "./types";
 
 Vue.use(Vuex);
 
@@ -97,7 +97,22 @@ const store = new Vuex.Store<State>({
     percentages: (state) => state.widgets.map((widget) => widget.percentage),
     totalAmount: (state) =>
       state.widgets.map((widget) => parseFloat(widget.amount)).reduce((p, c) => p + c, 0),
-    bitcoinAddress: (state) => state.result.address
+    bitcoinAddress: (state) => state.result.address,
+    resultantPayouts(state): Payout[] {
+      const {
+        result: {loaded, payout_1, payout_2 = undefined, payout_3 = undefined}
+      } = state;
+      const payouts: Payout[] = [];
+
+      // Mix is not fetched yet
+      if (!loaded) return payouts;
+
+      payout_1 && payouts.push(payout_1);
+      payout_2 && payouts.push(payout_2);
+      payout_3 && payouts.push(payout_3);
+
+      return payouts;
+    }
   }
 });
 
