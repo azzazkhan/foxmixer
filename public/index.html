@@ -20,14 +20,14 @@
         background-color: white;
         position: fixed;
         top: 0;
-        right: 0;
-        bottom: 0;
         left: 0;
         z-index: 99999999;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        height: 100vh;
+        width: 100%;
         animation: oscillate 4s ease-in-out 0 infinite forwards normal;
       }
 
@@ -51,7 +51,7 @@
       }
     </style>
   </head>
-  <body>
+  <body class="no-scroll">
     <div id="loader">
       <div id="javascript"></div>
       <img style="animation: oscillate 2s ease-in-out alternate infinite" src="/logo-large.svg" />
