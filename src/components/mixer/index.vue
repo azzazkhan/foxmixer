@@ -124,6 +124,7 @@
           .then((res) => {
             const data = res.data as Result;
             this.setResult({...data, loaded: true});
+            this.setGenerated(true);
             this.setLoader({loading: false, text: ""});
             this.$router.push(`/mix/${data.mix}/complete`);
           })
@@ -137,7 +138,7 @@
         this.snackbar.opened = true;
         this.snackbar.message = message;
       },
-      ...mapMutations(["setResult", "setLoader"])
+      ...mapMutations(["setResult", "setLoader", "setGenerated"])
     }
   });
 </script>

@@ -173,6 +173,22 @@
         </table>
       </div>
     </div>
+    <template>
+      <v-snackbar
+        color="#69F0AE"
+        v-model="successSnackbar"
+        top
+        right
+        content-class="text--white text-subtitle-1"
+        dark
+        :elevation="4"
+      >
+        <div class="icon-wrapper">
+          <v-icon color="black" size="35">mdi-check</v-icon>
+        </div>
+        <div class="text-wrapper">Mix was created successfully</div>
+      </v-snackbar>
+    </template>
   </page>
 </template>
 
@@ -200,6 +216,23 @@
       }
     }
   }
+  .v-snack__wrapper {
+    top: var(--header-height);
+    right: 15px;
+    width: 300px !important;
+    min-width: 0 !important;
+    .v-snack__content {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      .icon-wrapper {
+        margin-right: 10px;
+      }
+      .text-wrapper {
+        color: black;
+      }
+    }
+  }
 </style>
 
 <script lang="ts">
@@ -222,7 +255,8 @@
       btcAmountError: false,
       amountTableVisible: false,
       error: false,
-      addressType: "string" // "string" || "image"
+      addressType: "string", // "string" || "image"
+      successSnackbar: false
     }),
     watch: {
       btcAmount(amount) {
@@ -237,10 +271,19 @@
     },
     computed: {
       ...mapGetters(["bitcoinAddress", "resultantPayouts", "totalAmount"]),
-      ...mapState(["widgets", "result"])
+      ...mapState(["widgets", "result", "generated"])
+    },
+    mounted() {
+      if (this.generated) {
+        this.successSnackbar = true;
+        setTimeout(() => {
+          this.setGenerated(false);
+          this.successSnackbar = false;
+        }, 5000);
+      }
     },
     methods: {
-      ...mapMutations(["setLoader"]),
+      ...mapMutations(["setLoader", "setGenerated"]),
       handleError() {
         console.log("Error occurred");
         this.error = true;

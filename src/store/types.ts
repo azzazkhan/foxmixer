@@ -40,6 +40,7 @@ export interface State {
   couponCodePopupOpened: boolean;
   loader: Loader;
   payoutMethod: PayoutMethod;
+  generated: boolean;
   widgets: Widget[];
   result: Result;
 }
