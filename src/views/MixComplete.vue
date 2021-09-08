@@ -255,7 +255,7 @@
       btcAmountError: false,
       amountTableVisible: false,
       error: false,
-      addressType: "image", // "string" || "image"
+      addressType: "string", // "string" || "image"
       successSnackbar: false
     }),
     watch: {

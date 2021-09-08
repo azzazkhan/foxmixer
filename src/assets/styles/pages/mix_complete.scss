@@ -47,7 +47,7 @@
 
 .address-box {
   position: relative;
-  background-color: #e1f5fe;
+  // background-color: #e1f5fe;
   background-color: white;
   font-size: 18px;
   font-weight: bold;
@@ -67,8 +67,8 @@
     top: 18px;
     left: 0;
     right: 0;
-    background: rgba(7, 109, 206, 0.3);
     display: block;
+    background-color: rgba(107, 205, 250, 0.3);
   }
   &.qr-box {
     flex-grow: 0 !important;
@@ -124,6 +124,7 @@
     text-decoration: none;
   }
   .view-toggler {
+    z-index: 10;
     position: absolute;
     right: -6px;
     bottom: -6px;

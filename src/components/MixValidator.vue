@@ -29,7 +29,7 @@
             .finally(() => {
               this.overlay && this.setLoader({loading: false, text: ""});
             });
-        }, /* Math.floor(Math.random() * 7000) */ 10);
+        }, Math.floor(Math.random() * 5000));
       }
     },
     computed: mapState(["result"]),
