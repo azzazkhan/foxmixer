@@ -19,7 +19,8 @@
                   <div
                     :class="{
                       'address-box': true,
-                      'qr-box': addressType === 'image'
+                      'qr-box': addressType === 'image',
+                      address: addressType === 'string'
                     }"
                   >
                     <div class="header">
