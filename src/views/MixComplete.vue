@@ -42,7 +42,7 @@
                     <div class="qr-wrapper" v-if="addressType === 'image'">
                       <img
                         v-show="result.loaded"
-                        src="../assets/images/qr.png?v=2"
+                        src="../assets/images/qr.jpeg"
                         class="qr-image"
                         alt="BTC Wallet QR"
                       />
@@ -255,7 +255,7 @@
       btcAmountError: false,
       amountTableVisible: false,
       error: false,
-      addressType: "string", // "string" || "image"
+      addressType: "image", // "string" || "image"
       successSnackbar: false
     }),
     watch: {

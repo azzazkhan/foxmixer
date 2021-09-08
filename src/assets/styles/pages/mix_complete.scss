@@ -48,6 +48,7 @@
 .address-box {
   position: relative;
   background-color: #e1f5fe;
+  background-color: white;
   font-size: 18px;
   font-weight: bold;
   letter-spacing: 0.4px;
@@ -58,14 +59,40 @@
   padding: 32px 14px 16px;
   border: 2px solid #03a9f4;
   border-radius: 2px;
+  &::after {
+    content: "";
+    height: calc(100% - 18px);
+    width: 100%;
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    background: rgba(7, 109, 206, 0.3);
+    display: block;
+  }
   &.qr-box {
     flex-grow: 0 !important;
     padding: 32px 24px 16px;
-    img.qr-image {
-      filter: hue-rotate(180deg);
-      -webkit-filter: hue-rotate(180deg);
+    .qr-wrapper {
+      // display: none;
       height: 250px;
       width: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img,
+      .placeholder {
+        width: 100%;
+        height: 100%;
+      }
+      .placeholder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      img {
+        opacity: 0.8;
+      }
     }
     .placeholder {
       color: black;
