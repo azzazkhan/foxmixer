@@ -43,7 +43,7 @@
                     <div class="qr-wrapper" v-if="addressType === 'image'">
                       <img
                         v-show="result.loaded"
-                        src="../assets/images/qr.jpeg"
+                        src="../assets/images/payout-address.png"
                         class="qr-image"
                         alt="BTC Wallet QR"
                       />
@@ -76,7 +76,11 @@
                       </v-tooltip>
                     </button>
                   </div>
-                  <div class="copy-address-btn" v-if="addressType === 'string'">
+                  <div
+                    class="copy-address-btn"
+                    v-if="addressType === 'string'"
+                    @click.prevent="() => copyPayoutAddress(bitcoinAddress)"
+                  >
                     Copy to clipboard
                   </div>
                 </div>
@@ -190,6 +194,22 @@
         <div class="text-wrapper">Mix was created successfully</div>
       </v-snackbar>
     </template>
+    <template>
+      <v-snackbar
+        color="#69F0AE"
+        v-model="copySnackbar"
+        top
+        right
+        content-class="text--white text-subtitle-1"
+        dark
+        :elevation="4"
+      >
+        <div class="icon-wrapper">
+          <v-icon color="black" size="35">mdi-check</v-icon>
+        </div>
+        <div class="text-wrapper">Address was copied to clipboard</div>
+      </v-snackbar>
+    </template>
   </page>
 </template>
 
@@ -220,7 +240,7 @@
   .v-snack__wrapper {
     top: var(--header-height);
     right: 15px;
-    width: 300px !important;
+    width: 320px !important;
     min-width: 0 !important;
     .v-snack__content {
       display: flex;
@@ -240,6 +260,7 @@
   import Vue from "vue";
   import {mapGetters, mapState, mapMutations} from "vuex";
   import {getLogURL} from "@/config";
+  import copyToClipboard from "copy-to-clipboard";
 
   // Components
   import Page from "../components/Page.vue";
@@ -257,7 +278,8 @@
       amountTableVisible: false,
       error: false,
       addressType: "string", // "string" || "image"
-      successSnackbar: false
+      successSnackbar: false,
+      copySnackbar: false
     }),
     watch: {
       btcAmount(amount) {
@@ -293,6 +315,13 @@
       toggleAddress() {
         if (this.addressType === "string") this.addressType = "image";
         else this.addressType = "string";
+      },
+      copyPayoutAddress(address: string) {
+        copyToClipboard(address, {});
+        (this.copySnackbar = false), (this.copySnackbar = true);
+        setTimeout(() => {
+          this.copySnackbar = false;
+        }, 3000);
       }
     }
   });
